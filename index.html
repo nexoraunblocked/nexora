@@ -34,7 +34,7 @@ body {
 }
 
 .sidebar:hover {
-  width: 250px; /* expanded width */
+  width: 250px;
 }
 
 .sidebar a {
@@ -48,8 +48,9 @@ body {
   border-radius: 12px;
   margin: 10px;
   background: linear-gradient(145deg, #3b0d3f, #220624);
-  box-shadow: 5px 5px 10px var(--shadow-dark),
-              -5px -5px 10px var(--shadow-light);
+
+  box-shadow: -5px -5px 10px var(--shadow-light);
+  
   white-space: nowrap;
   overflow: hidden;
   transition: all 0.3s ease;
@@ -57,9 +58,10 @@ body {
 
 .sidebar a:hover {
   background: var(--accent-color);
-  box-shadow: inset 5px 5px 10px var(--shadow-dark),
-              inset -5px -5px 10px var(--shadow-light);
+
+  box-shadow: inset -5px -5px 10px var(--shadow-light);
 }
+
 
 .sidebar i {
   min-width: 24px;
