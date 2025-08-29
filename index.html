@@ -6,32 +6,30 @@
 <title>Nexora</title>
 <style>
 :root {
-  --bg-color: #2a0a2e;
-  --accent-color: #b3006b;
+  --page-bg: #000000;
+  --sidebar-bg: #2a0a2e;      
+  --accent-color: #b3006b;    
   --shadow-light: rgba(255, 255, 255, 0.1);
-  --shadow-dark: rgba(0, 0, 0, 0.5);
+  --shadow-opacity: 0.2;
 }
 
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: var(--bg-color);
+  background: var(--page-bg);
   color: white;
 }
 
-/* Sidebar with unified light-source shadows */
 .sidebar {
   height: 100%;
-  width: 60px; /* collapsed width */
+  width: 60px;
   position: fixed;
   top: 0;
   left: 0;
-  background: var(--bg-color);
+  background: var(--sidebar-bg);
   overflow-x: hidden;
   transition: width 0.3s ease;
   padding-top: 20px;
-  /* Single-direction lighting for panel */
-  box-shadow: inset -5px -5px 10px var(--shadow-light);
 }
 
 .sidebar:hover {
@@ -48,21 +46,22 @@ body {
   gap: 15px;
   border-radius: 12px;
   margin: 10px;
-  background: linear-gradient(145deg, #3b0d3f, #220624);
-
-  /* Top-left highlight with faint contour on bottom-right */
-  box-shadow: -5px -5px 10px var(--shadow-light),
-              2px 2px 4px rgba(0,0,0,0.15);
+  background: var(--sidebar-bg);
+  
+  box-shadow: -5px -5px 10px rgba(255, 255, 255, var(--shadow-opacity));
   
   white-space: nowrap;
   overflow: hidden;
-  transition: all 0.3s ease;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.sidebar:not(:hover) a {
+  --shadow-opacity: 0;
 }
 
 .sidebar a:hover {
   background: var(--accent-color);
-  box-shadow: inset -5px -5px 10px var(--shadow-light),
-              inset 2px 2px 4px rgba(0,0,0,0.15);
+  box-shadow: inset -5px -5px 10px rgba(255,255,255,var(--shadow-opacity));
 }
 
 .sidebar i {
@@ -70,7 +69,6 @@ body {
   text-align: center;
 }
 
-/* Hide text when collapsed */
 .sidebar:not(:hover) span {
   display: none;
 }
@@ -85,7 +83,6 @@ body {
   margin-left: 250px;
 }
 
-/* Nexora title styling */
 .site-title {
   font-size: 2rem;
   font-weight: 700;
@@ -95,8 +92,7 @@ body {
   text-align: center;
   letter-spacing: 2px;
 }
-</style>
-<!-- Link to icons (Font Awesome) -->
+</style>    
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
