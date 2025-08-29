@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Neumorphic Icon Sidebar</title>
+<title>Nexora</title>
 <style>
 :root {
   --bg-color: #2a0a2e;
@@ -19,6 +19,7 @@ body {
   color: white;
 }
 
+/* Sidebar with unified light-source shadows */
 .sidebar {
   height: 100%;
   width: 60px; /* collapsed width */
@@ -29,8 +30,8 @@ body {
   overflow-x: hidden;
   transition: width 0.3s ease;
   padding-top: 20px;
-  box-shadow: inset -5px -5px 10px var(--shadow-light),
-              inset 5px 5px 15px var(--shadow-dark);
+  /* Single-direction lighting for panel */
+  box-shadow: inset -5px -5px 10px var(--shadow-light);
 }
 
 .sidebar:hover {
@@ -49,7 +50,9 @@ body {
   margin: 10px;
   background: linear-gradient(145deg, #3b0d3f, #220624);
 
-  box-shadow: -5px -5px 10px var(--shadow-light);
+  /* Top-left highlight with faint contour on bottom-right */
+  box-shadow: -5px -5px 10px var(--shadow-light),
+              2px 2px 4px rgba(0,0,0,0.15);
   
   white-space: nowrap;
   overflow: hidden;
@@ -58,10 +61,9 @@ body {
 
 .sidebar a:hover {
   background: var(--accent-color);
-
-  box-shadow: inset -5px -5px 10px var(--shadow-light);
+  box-shadow: inset -5px -5px 10px var(--shadow-light),
+              inset 2px 2px 4px rgba(0,0,0,0.15);
 }
-
 
 .sidebar i {
   min-width: 24px;
@@ -82,6 +84,17 @@ body {
 .sidebar:hover ~ .main-content {
   margin-left: 250px;
 }
+
+/* Nexora title styling */
+.site-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+  padding: 20px 0;
+  text-align: center;
+  letter-spacing: 2px;
+}
 </style>
 <!-- Link to icons (Font Awesome) -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -96,10 +109,10 @@ body {
 </div>
 
 <div class="main-content">
-  <h2>Welcome to the Page</h2>
-  <p>Hover over the sidebar to see it expand.</p>
+  <h1 class="site-title">Nexora</h1>
 </div>
 
 </body>
 </html>
+
 
