@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nexora</title>
+<title>Google Classroom</title>
 <style>
 :root {
   --page-bg: #000000;
@@ -11,6 +11,7 @@
   --accent-color: #b3006b;    
   --shadow-light: rgba(255, 255, 255, 0.1);
   --shadow-opacity: 0.2;
+  --pink-shadow: rgba(255, 105, 180, 0.5);
 }
 
 body {
@@ -20,36 +21,78 @@ body {
   color: white;
 }
 
+/* Outer frame */
+.page-frame {
+  min-height: 100vh;
+  border: 6px solid var(--sidebar-bg);
+  border-radius: 20px;
+  box-shadow: 0 0 20px var(--pink-shadow);
+  overflow: hidden;
+  display: flex;
+  box-sizing: border-box;
+}
+
+/* Sidebar */
 .sidebar {
-  height: 100%;
   width: 60px;
-  position: fixed;
-  top: 0;
-  left: 0;
   background: var(--sidebar-bg);
   overflow-x: hidden;
   transition: width 0.3s ease;
   padding-top: 20px;
+  border-radius: 0;
+  box-shadow: 0 0 20px var(--pink-shadow);
 }
 
 .sidebar:hover {
   width: 250px;
 }
 
+/* Sidebar title/logo */
+.sidebar-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-bottom: 20px;
+  padding: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: opacity 0.3s ease, font-size 0.3s ease;
+}
+
+.sidebar-title img {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  box-shadow: 0 0 10px var(--pink-shadow);
+}
+
+.sidebar-title span {
+  font-size: 1.5rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+  color: white;
+}
+
+.sidebar:not(:hover) .sidebar-title span {
+  display: none;
+}
+
+/* Sidebar links - compact but aligned */
 .sidebar a {
-  padding: 12px;
+  display: flex;
+  align-items: center;       /* Vertically center icon + text */
+  justify-content: flex-start;
+  gap: 10px;                  /* Space between icon and text */
+  padding: 10px 12px;         /* Smaller padding for compact look */
   text-decoration: none;
   font-size: 18px;
   color: white;
-  display: flex;
-  align-items: center;
-  gap: 15px;
   border-radius: 12px;
-  margin: 10px;
+  margin: 8px 10px;
   background: var(--sidebar-bg);
-  
   box-shadow: -5px -5px 10px rgba(255, 255, 255, var(--shadow-opacity));
-  
   white-space: nowrap;
   overflow: hidden;
   transition: background 0.3s ease, box-shadow 0.3s ease;
@@ -64,23 +107,25 @@ body {
   box-shadow: inset -5px -5px 10px rgba(255,255,255,var(--shadow-opacity));
 }
 
+/* Icon alignment */
 .sidebar i {
-  min-width: 24px;
-  text-align: center;
+  flex-shrink: 0;
+  width: 20px;                /* Slightly smaller fixed width */
+  height: 20px;               /* Matches icon font-size */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;             /* Matches text size */
 }
 
 .sidebar:not(:hover) span {
   display: none;
 }
 
+/* Main content */
 .main-content {
-  margin-left: 60px;
-  transition: margin-left 0.3s ease;
+  flex: 1;
   padding: 20px;
-}
-
-.sidebar:hover ~ .main-content {
-  margin-left: 250px;
 }
 
 .site-title {
@@ -97,18 +142,23 @@ body {
 </head>
 <body>
 
-<div class="sidebar">
-  <a href="#"><i class="fas fa-home"></i> <span>Home</span></a>
-  <a href="#"><i class="fas fa-user"></i> <span>About</span></a>
-  <a href="#"><i class="fas fa-cogs"></i> <span>Services</span></a>
-  <a href="#"><i class="fas fa-envelope"></i> <span>Contact</span></a>
-</div>
+<div class="page-frame">
+  <div class="sidebar">
+    <div class="sidebar-title">
+      <img src="https://i.imgur.com/PXA0wkQ.png" alt="Nexora Logo">
+      <span>Nexora</span>
+    </div>
+    <a href="#"><i class="fas fa-home"></i> <span>Home</span></a>
+    <a href="#"><i class="fas fa-gamepad"></i> <span>Games</span></a>
+    <a href="#"><i class="fas fa-film"></i> <span>Movies</span></a>
+    <a href="#"><i class="fas fa-globe"></i> <span>Proxy</span></a>
+    <a href="#"><i class="fas fa-user-secret"></i> <span>Hacks</span></a>
+  </div>
 
-<div class="main-content">
-  <h1 class="site-title">Nexora</h1>
+  <div class="main-content">
+    <h1 class="site-title">Nexora</h1>
+  </div>
 </div>
 
 </body>
 </html>
-
-
