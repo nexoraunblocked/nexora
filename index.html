@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Neumorphic Sidebar</title>
+<title>Neumorphic Icon Sidebar</title>
 <style>
 :root {
-  --bg-color: #2a0a2e;          /* Deep purple base */
-  --accent-color: #b3006b;      /* Dark pink accent */
+  --bg-color: #2a0a2e;
+  --accent-color: #b3006b;
   --shadow-light: rgba(255, 255, 255, 0.1);
   --shadow-dark: rgba(0, 0, 0, 0.5);
 }
@@ -21,31 +21,38 @@ body {
 
 .sidebar {
   height: 100%;
-  width: 250px;
+  width: 60px; /* collapsed width */
   position: fixed;
   top: 0;
-  left: -250px;
+  left: 0;
   background: var(--bg-color);
   overflow-x: hidden;
-  transition: 0.3s;
+  transition: width 0.3s ease;
   padding-top: 20px;
-  border-radius: 0 20px 20px 0;
   box-shadow: inset -5px -5px 10px var(--shadow-light),
               inset 5px 5px 15px var(--shadow-dark);
 }
 
+.sidebar:hover {
+  width: 250px; /* expanded width */
+}
+
 .sidebar a {
-  padding: 12px 20px;
+  padding: 12px;
   text-decoration: none;
   font-size: 18px;
   color: white;
-  display: block;
-  margin: 10px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
   border-radius: 12px;
+  margin: 10px;
   background: linear-gradient(145deg, #3b0d3f, #220624);
   box-shadow: 5px 5px 10px var(--shadow-dark),
               -5px -5px 10px var(--shadow-light);
-  transition: all 0.2s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: all 0.3s ease;
 }
 
 .sidebar a:hover {
@@ -54,63 +61,42 @@ body {
               inset -5px -5px 10px var(--shadow-light);
 }
 
-.open-btn {
-  font-size: 20px;
-  cursor: pointer;
-  background: var(--bg-color);
-  color: white;
-  border: none;
-  padding: 12px 20px;
-  margin: 20px;
-  border-radius: 12px;
-  box-shadow: 5px 5px 10px var(--shadow-dark),
-              -5px -5px 10px var(--shadow-light);
-  transition: all 0.2s ease;
+.sidebar i {
+  min-width: 24px;
+  text-align: center;
 }
 
-.open-btn:hover {
-  background: var(--accent-color);
-  box-shadow: inset 5px 5px 10px var(--shadow-dark),
-              inset -5px -5px 10px var(--shadow-light);
+/* Hide text when collapsed */
+.sidebar:not(:hover) span {
+  display: none;
 }
 
 .main-content {
-  margin-left: 0;
-  transition: margin-left 0.3s;
+  margin-left: 60px;
+  transition: margin-left 0.3s ease;
   padding: 20px;
 }
 
+.sidebar:hover ~ .main-content {
+  margin-left: 250px;
+}
 </style>
+<!-- Link to icons (Font Awesome) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-<div id="mySidebar" class="sidebar">
-  <a href="#">Home</a>
-  <a href="#">About</a>
-  <a href="#">Services</a>
-  <a href="#">Contact</a>
+<div class="sidebar">
+  <a href="#"><i class="fas fa-home"></i> <span>Home</span></a>
+  <a href="#"><i class="fas fa-user"></i> <span>About</span></a>
+  <a href="#"><i class="fas fa-cogs"></i> <span>Services</span></a>
+  <a href="#"><i class="fas fa-envelope"></i> <span>Contact</span></a>
 </div>
 
 <div class="main-content">
-  <button class="open-btn" onclick="toggleSidebar()">☰ Open Sidebar</button>
   <h2>Welcome to the Page</h2>
-  <p>Click the button to open or close the sidebar.</p>
+  <p>Hover over the sidebar to see it expand.</p>
 </div>
-
-<script>
-function toggleSidebar() {
-  const sidebar = document.getElementById("mySidebar");
-  const mainContent = document.querySelector(".main-content");
-
-  if (sidebar.style.left === "-250px") {
-    sidebar.style.left = "0";
-    mainContent.style.marginLeft = "250px";
-  } else {
-    sidebar.style.left = "-250px";
-    mainContent.style.marginLeft = "0";
-  }
-}
-</script>
 
 </body>
 </html>
