@@ -3,81 +3,115 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Simple Sidebar</title>
+<title>Neumorphic Sidebar</title>
 <style>
+:root {
+  --bg-color: #2a0a2e;          /* Deep purple base */
+  --accent-color: #b3006b;      /* Dark pink accent */
+  --shadow-light: rgba(255, 255, 255, 0.1);
+  --shadow-dark: rgba(0, 0, 0, 0.5);
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: var(--bg-color);
+  color: white;
+}
 
 .sidebar {
-height: 100%;
-width: 250px;
-position: fixed;
-top: 0;
-left: -250px;
-background-color: #111;
-overflow-x: hidden;
-transition: 0.3s;
-padding-top: 20px;
+  height: 100%;
+  width: 250px;
+  position: fixed;
+  top: 0;
+  left: -250px;
+  background: var(--bg-color);
+  overflow-x: hidden;
+  transition: 0.3s;
+  padding-top: 20px;
+  border-radius: 0 20px 20px 0;
+  box-shadow: inset -5px -5px 10px var(--shadow-light),
+              inset 5px 5px 15px var(--shadow-dark);
 }
 
 .sidebar a {
-padding: 10px 15px;
-text-decoration: none;
-font-size: 18px;
-color: white;
-display: block;
+  padding: 12px 20px;
+  text-decoration: none;
+  font-size: 18px;
+  color: white;
+  display: block;
+  margin: 10px;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #3b0d3f, #220624);
+  box-shadow: 5px 5px 10px var(--shadow-dark),
+              -5px -5px 10px var(--shadow-light);
+  transition: all 0.2s ease;
 }
 
 .sidebar a:hover {
-background-color: #575757;
+  background: var(--accent-color);
+  box-shadow: inset 5px 5px 10px var(--shadow-dark),
+              inset -5px -5px 10px var(--shadow-light);
 }
-
 
 .open-btn {
-font-size: 20px;
-cursor: pointer;
-background-color: #111;
-color: white;
-border: none;
-padding: 10px 15px;
+  font-size: 20px;
+  cursor: pointer;
+  background: var(--bg-color);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  margin: 20px;
+  border-radius: 12px;
+  box-shadow: 5px 5px 10px var(--shadow-dark),
+              -5px -5px 10px var(--shadow-light);
+  transition: all 0.2s ease;
 }
 
+.open-btn:hover {
+  background: var(--accent-color);
+  box-shadow: inset 5px 5px 10px var(--shadow-dark),
+              inset -5px -5px 10px var(--shadow-light);
+}
 
 .main-content {
-margin-left: 0;
-transition: margin-left 0.3s;
+  margin-left: 0;
+  transition: margin-left 0.3s;
+  padding: 20px;
 }
+
 </style>
 </head>
 <body>
 
-
 <div id="mySidebar" class="sidebar">
-<a href="#">Home</a>
-<a href="#">About</a>
-<a href="#">Services</a>
-<a href="#">Contact</a>
+  <a href="#">Home</a>
+  <a href="#">About</a>
+  <a href="#">Services</a>
+  <a href="#">Contact</a>
 </div>
 
-
 <div class="main-content">
-<button class="open-btn" onclick="toggleSidebar()">☰ Open Sidebar</button>
-<h2>Welcome to the Page</h2>
-<p>Click the button to open or close the sidebar.</p>
+  <button class="open-btn" onclick="toggleSidebar()">☰ Open Sidebar</button>
+  <h2>Welcome to the Page</h2>
+  <p>Click the button to open or close the sidebar.</p>
 </div>
 
 <script>
 function toggleSidebar() {
-const sidebar = document.getElementById("mySidebar");
-const mainContent = document.querySelector(".main-content");
+  const sidebar = document.getElementById("mySidebar");
+  const mainContent = document.querySelector(".main-content");
 
-if (sidebar.style.left === "-250px") {
-sidebar.style.left = "0";
-mainContent.style.marginLeft = "250px";
-} else {
-sidebar.style.left = "-250px";
-mainContent.style.marginLeft = "0";
-}
+  if (sidebar.style.left === "-250px") {
+    sidebar.style.left = "0";
+    mainContent.style.marginLeft = "250px";
+  } else {
+    sidebar.style.left = "-250px";
+    mainContent.style.marginLeft = "0";
+  }
 }
 </script>
 
 </body>
 </html>
+
