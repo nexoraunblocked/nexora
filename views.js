@@ -9,7 +9,7 @@ function loadView(file) {
     });
 }
 
-function renderHome()   { loadView('home.html'); }
+function renderHome()   { loadView('index.html'); }
 function renderGames()  { loadView('games.html'); }
 function renderMovies() { loadView('movies.html'); }
 function renderProxy()  { loadView('proxy.html'); }
