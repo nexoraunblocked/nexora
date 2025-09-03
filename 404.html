@@ -3,7 +3,10 @@
   <head>
     <meta charset="UTF-8">
     <script>
-      location.href = "/";
+      const path = location.pathname;
+      if (path !== "/") {
+        location.replace("/");
+      }
     </script>
   </head>
   <body></body>
