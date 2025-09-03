@@ -10,8 +10,7 @@
       background: #0f0f0f;
       color: #fff;
       display: flex;
-      justify-content: center;
-      align-items: center;
+      flex-direction: column;
       height: 100vh;
       margin: 0;
     }
@@ -20,10 +19,9 @@
       padding: 20px 25px;
       border-radius: 8px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-    }
-    form {
       display: flex;
       gap: 8px;
+      margin: 10px;
     }
     input[type="text"] {
       flex: 1;
@@ -45,20 +43,29 @@
     button:hover {
       background: #005fcc;
     }
+    iframe {
+      flex: 1;
+      border: none;
+      width: 100%;
+    }
   </style>
-  <script>
-    // Immediate redirect to home
-    location.href = "/";
-  </script>
 </head>
 <body>
 
   <div class="search-container">
-    <form method="GET" action="https://ultraviolet-app-cool-rain-4791.fly.dev/service/">
+    <form method="GET" action="https://ultraviolet-app-cool-rain-4791.fly.dev/service/" target="proxy-frame">
       <input name="url" type="text" placeholder="Search DuckDuckGo or type a URL" required>
       <button type="submit">Go</button>
     </form>
   </div>
+
+  <iframe
+    name="proxy-frame"
+    src="https://proxy.nexoraunblocked.online"
+    referrerpolicy="no-referrer"
+    allow="clipboard-read; clipboard-write"
+    sandbox="allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-same-origin allow-scripts allow-downloads">
+  </iframe>
 
 </body>
 </html>
