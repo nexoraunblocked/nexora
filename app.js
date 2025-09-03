@@ -1,7 +1,7 @@
 const app = document.getElementById('app');
 
 const routes = {
-  '/home': renderHome,
+  '/index': renderHome,
   '/games': renderGames,
   '/movies': renderMovies,
   '/proxy': renderProxy,
@@ -20,10 +20,10 @@ document.querySelectorAll('.sidebar a').forEach(link => {
   });
 });
 
-window.onpopstate = () => navigate('/home');
+window.onpopstate = () => navigate('/index');
 
 if (!routes[location.pathname]) {
-  navigate('/home');
+  navigate('/index');
 } else {
   navigate(location.pathname);
 }
