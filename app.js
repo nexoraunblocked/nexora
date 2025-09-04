@@ -1,4 +1,3 @@
-// app.js
 const app = document.getElementById('app');
 
 const routes = {
@@ -7,11 +6,10 @@ const routes = {
   '/movies':  renderMovies,
   '/proxy':   renderProxy,
   '/hacks':   renderHacks,
-  '/chatbot': renderChatbot
+  '/chatbot': renderChatbot // Added Chatbot route
 };
 
 function navigate(path) {
-  // pushState so back/forward works naturally
   history.pushState({}, '', path);
   const renderFn = routes[path];
   if (renderFn) {
@@ -21,7 +19,7 @@ function navigate(path) {
   }
 }
 
-// sidebar links
+// Sidebar link handling
 document.querySelectorAll('.sidebar a').forEach(link => {
   link.addEventListener('click', e => {
     e.preventDefault();
@@ -29,12 +27,12 @@ document.querySelectorAll('.sidebar a').forEach(link => {
   });
 });
 
-// handle back/forward buttons
+// Back/forward button handling
 window.onpopstate = () => {
   const path = location.pathname;
   (routes[path] || renderHome)();
 };
 
-// initial load
-const initial = location.pathname;
-(routes[initial] || renderHome)();
+// Initial load
+const initialPath = location.pathname;
+(routes[initialPath] || renderHome)();

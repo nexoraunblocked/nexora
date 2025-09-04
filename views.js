@@ -1,5 +1,5 @@
 function loadView(file) {
-  // ensure we always fetch from the site root
+  // Always fetch from root to avoid /path/file.html 404s
   fetch('/' + file)
     .then(res => res.text())
     .then(html => {
