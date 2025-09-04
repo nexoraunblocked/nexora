@@ -1,149 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ultraviolet Proxy</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>UV Frontend Only</title>
 
-  <!-- 1) UV client runtime and config -->
+  <!-- 1) UV client runtime + config -->
   <script src="/uv/uv.bundle.js"></script>
   <script src="/uv/uv.config.js"></script>
-  <!-- 2) BareMux for wisp/bare transports -->
+
+  <!-- 2) BareMux for transport switching -->
   <script src="/baremux/index.js"></script>
 
-  <!-- 3) Register the UV service worker -->
-  <script>
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker.register("/uv/sw.js");
-      });
-    }
-  </script>
-
   <style>
-    :root { --search-h: 64px; }
-    body {
-      margin: 0;
-      height: 100vh;
-      overflow: hidden;
-      background: #0f0f0f;
-      color: #fff;
-      font-family: Arial, sans-serif;
-    }
-    .search-container {
-      position: absolute;
-      top: 50%;
-      width: 100%;
-      transform: translateY(-50%);
-      display: flex;
-      justify-content: center;
-      transition: top .3s ease, transform .3s ease;
-      z-index: 2;
-    }
-    .search-bar {
-      display: flex;
-      width: 80%;
-      max-width: 600px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
-    }
-    .search-bar input {
-      flex: 1;
-      padding: 12px;
-      font-size: 16px;
-      border: none;
-      border-radius: 4px 0 0 4px;
-      outline: none;
-    }
-    .search-bar button {
-      padding: 12px 20px;
-      background: #0078ff;
-      color: #fff;
-      border: none;
-      font-size: 16px;
-      cursor: pointer;
-      border-radius: 0 4px 4px 0;
-    }
-    .search-bar button:hover {
-      background: #005fcc;
-    }
-    iframe {
-      display: none;
-      position: absolute;
-      top: var(--search-h);
-      left: 0;
-      width: 100%;
-      height: calc(100% - var(--search-h));
-      border: none;
-      opacity: 0;
-      transition: opacity .3s ease;
-    }
-    /* Slide up the bar and reveal the iframe */
-    body.submitted .search-container {
-      top: 0;
-      transform: translateY(0);
-    }
-    body.submitted iframe {
-      display: block;
-      opacity: 1;
-    }
+    body { margin: 0; font-family: sans-serif; background: #111; color: #eee; }
+    #controls { display:flex; max-width:600px; margin:4rem auto; gap:8px; }
+    #urlInput { flex:1; padding:8px; font-size:1rem; border:none; border-radius:4px; }
+    #goBtn { padding:8px 16px; background:#0078ff; border:none; color:#fff; border-radius:4px; cursor:pointer; }
+    #iframe { display:none; width:100%; height:calc(100vh - 56px); border:none; }
+    body.loaded #iframe { display:block; }
   </style>
 </head>
-
 <body>
-  <div class="search-container">
-    <div class="search-bar">
-      <input
-        id="urlInput"
-        type="text"
-        placeholder="Enter URL or search term"
-        autocomplete="off"
-        required
-      />
-      <button id="searchBtn">Go</button>
-    </div>
+  <div id="controls">
+    <input id="urlInput" type="text" placeholder="Enter site or search" />
+    <button id="goBtn">Go</button>
   </div>
-
-  <iframe id="iframeWindow" sandbox="allow-forms allow-scripts allow-same-origin allow-popups"></iframe>
+  <iframe id="iframe" sandbox="allow-scripts allow-same-origin"></iframe>
 
   <script>
     (async () => {
-      // Initialize BareMuxConnection for UV 3.x.x
-      const connection = new BareMux.BareMuxConnection("/baremux/worker.js");
-      const wispUrl = (location.protocol === "https:" ? "wss" : "ws")
-                    + "://" + location.host + "/wisp/";
-      const bareUrl = (location.protocol === "https:" ? "https" : "http")
-                    + "://" + location.host + "/bare/";
-      const encode = __uv$config.encodeUrl;
-      const prefix = __uv$config.prefix;
+      // register UV’s SW
+      if ('serviceWorker' in navigator) {
+        await navigator.serviceWorker.register('/uv/sw.js');
+      }
 
-      // Ensure Enter key works
-      document.getElementById("urlInput").addEventListener("keydown", e => {
-        if (e.key === "Enter") {
-          e.preventDefault();
-          document.getElementById("searchBtn").click();
-        }
+      // prepare your transport
+      const conn = new BareMux.BareMuxConnection('/baremux/worker.js');
+      const wisp = `${location.protocol==='https:'?'wss':'ws'}://${location.host}/wisp/`;
+      const bare = `${location.protocol==='https:'?'https':'http'}://${location.host}/bare/`;
+
+      const { prefix, encodeUrl } = __uv$config;
+      const input = document.getElementById('urlInput');
+      const btn   = document.getElementById('goBtn');
+      const frame = document.getElementById('iframe');
+
+      input.addEventListener('keydown', e => {
+        if (e.key==='Enter') btn.click();
       });
 
-      document.getElementById("searchBtn").addEventListener("click", async e => {
-        e.preventDefault();
-        let raw = document.getElementById("urlInput").value.trim();
+      btn.addEventListener('click', async () => {
+        let u = input.value.trim();
 
-        // Search fallback vs HTTPS normalization
-        if (!raw.includes(".") && !/^https?:\/\//i.test(raw)) {
-          raw = "https://duckduckgo.com/?q=" + encodeURIComponent(raw);
-        }
-        else if (!/^https?:\/\//i.test(raw)) {
-          raw = "https://" + raw;
+        // if no dot → search; else ensure protocol
+        if (!u.includes('.')) {
+          u = 'https://duckduckgo.com/?q=' + encodeURIComponent(u);
+        } else if (!/^https?:\/\//i.test(u)) {
+          u = 'https://' + u;
         }
 
-        // Establish transport if missing (defaults to epoxy/wisp)
-        if (!await connection.getTransport()) {
-          await connection.setTransport("/epoxy/index.mjs", [{ wisp: wispUrl }]);
+        // lazy-initialize your default (wisp/epoxy) transport
+        if (!await conn.getTransport()) {
+          await conn.setTransport('/epoxy/index.mjs', [{ wisp }]);
         }
 
-        // Point iframe at the UV interception proxy
-        document.getElementById("iframeWindow").src = prefix + encode(raw);
-        document.body.classList.add("submitted");
+        // load proxied URL
+        frame.src = prefix + encodeUrl(u);
+        document.body.classList.add('loaded');
       });
     })();
   </script>
