@@ -1,18 +1,27 @@
+// app.js
 const app = document.getElementById('app');
 
 const routes = {
-  '/home': renderHome,
-  '/games': renderGames,
-  '/movies': renderMovies,
-  '/proxy': renderProxy,
-  '/hacks': renderHacks
+  '/home':    renderHome,
+  '/games':   renderGames,
+  '/movies':  renderMovies,
+  '/proxy':   renderProxy,
+  '/hacks':   renderHacks,
+  '/chatbot': renderChatbot
 };
 
 function navigate(path) {
-  history.replaceState({}, '', path);
-  routes[path]?.();
+  // pushState so back/forward works naturally
+  history.pushState({}, '', path);
+  const renderFn = routes[path];
+  if (renderFn) {
+    renderFn();
+  } else {
+    renderHome();
+  }
 }
 
+// sidebar links
 document.querySelectorAll('.sidebar a').forEach(link => {
   link.addEventListener('click', e => {
     e.preventDefault();
@@ -20,10 +29,12 @@ document.querySelectorAll('.sidebar a').forEach(link => {
   });
 });
 
-window.onpopstate = () => navigate('/home');
+// handle back/forward buttons
+window.onpopstate = () => {
+  const path = location.pathname;
+  (routes[path] || renderHome)();
+};
 
-if (!routes[location.pathname]) {
-  navigate('/home');
-} else {
-  navigate(location.pathname);
-}
+// initial load
+const initial = location.pathname;
+(routes[initial] || renderHome)();
