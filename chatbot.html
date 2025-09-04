@@ -1,198 +1,332 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>AI Gemma 2</title>
-  <style>
-    :root {
-      --jet-black: #000000;
-      --gradient-dark: linear-gradient(to bottom, #0a0a0a, #1a1a1a);
-      --accent: #007bff;
-      --bot-header: #888;
-    }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Nexora Chat</title>
 
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: var(--jet-black);
-      color: white;
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-      overflow: hidden;
-    }
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
 
-    header {
-      text-align: center;
-      padding: 1rem;
-      font-size: 1.5rem;
-      font-weight: bold;
-      background: var(--gradient-dark);
-    }
+<style>
+:root{
+  --page-bg:#000000;
+  --panel:#0f1012;
+  --panel-2:#141518;
 
-    #chat {
-      flex: 1;
-      padding: 1rem;
-      overflow-y: auto;
-      background: var(--jet-black);
-    }
+  /* Pink accents */
+  --pink:#ff4da6;
+  --pink-deep:#b3006b;
+  --pink-shadow: rgba(255, 105, 180, 0.5);
 
-    .message {
-      margin: 1rem 0;
-      max-width: 70%;
-      line-height: 1.5;
-    }
+  /* Send button + icon */
+  --accent: var(--pink);   /* button background */
+  --send-icon:#ffffff;     /* arrow/square glyph color */
 
-    .user {
-      background: var(--accent);
-      color: white;
-      padding: 0.75rem 1rem;
-      border-radius: 12px;
-      align-self: flex-end;
-      margin-left: auto;
-    }
+  /* Text */
+  --text:#e8e8ea;
+  --muted:#9aa0a6;
 
-    .bot {
-      color: white;
-      margin-right: auto;
-    }
+  --radius:12px;
+}
 
-    .bot-header {
-      font-size: 0.8rem;
-      color: var(--bot-header);
-      margin-bottom: 0.25rem;
-    }
+*{box-sizing:border-box}
+html,body{height:100%}
 
-    .loader {
-      display: inline-block;
-      width: 14px;
-      height: 14px;
-      border: 2px solid var(--accent);
-      border-top: 2px solid transparent;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin-left: 6px;
-    }
+body{
+  margin:0;
+  background:var(--page-bg);
+  color:var(--text);
+  font:500 16px/1.5 Arial, sans-serif; /* default page font */
+  display:flex; flex-direction:column;
+}
 
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
+/* App shell */
+.app{
+  display:flex; flex-direction:column; height:100%;
+}
 
-    .input-bar {
-      display: flex;
-      padding: 0.75rem;
-      background: var(--jet-black);
-    }
+.header{
+  height:56px; display:flex; align-items:center; justify-content:center;
+  color:var(--muted); font-weight:700; letter-spacing:.3px;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+  background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);
+}
 
-    textarea {
-      flex: 1;
-      background: #111;
-      border: none;
-      border-radius: 10px;
-      padding: 0.75rem;
-      color: white;
-      resize: none;
-      font-size: 1rem;
-    }
+/* Chat area */
+.chat{
+  flex:1; position:relative; overflow:hidden;
+  display:flex; flex-direction:column;
+}
 
-    button {
-      background: #222;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      width: 40px;
-      height: 40px;
-      margin-left: 0.5rem;
-      font-size: 1.2rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-    }
+.scroll{
+  flex:1; overflow:auto; padding:20px; gap:10px; display:flex; flex-direction:column;
+}
 
-    .typing-intro {
-      font-size: 1.2rem;
-      color: var(--accent);
-      text-align: center;
-      margin-top: 2rem;
-      white-space: nowrap;
-      overflow: hidden;
-      border-right: 2px solid var(--accent);
-      width: 0;
-      animation: typing 3s steps(22) 1s forwards, blink 0.7s step-end infinite;
-    }
+/* Centered intro */
+.intro{
+  position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  pointer-events:none;
+}
+.intro h1{
+  margin:0;
+  font:800 28px/1.1 inherit; /* default page font */
+  letter-spacing:.2px;
+  background:linear-gradient(90deg,var(--pink),var(--pink-deep));
+  -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent;
+}
 
-    @keyframes typing {
-      from { width: 0; }
-      to { width: 22ch; }
-    }
+/* Messages */
+.msg{max-width:72%; animation:fade .2s ease}
 
-    @keyframes blink {
-      50% { border-color: transparent; }
-    }
-  </style>
+.msg.user{
+  align-self:flex-end; background:var(--pink); color:#fff;
+  padding:10px 12px; border-radius:18px; border-bottom-right-radius:6px;
+  box-shadow:0 6px 20px var(--pink-shadow);
+}
+
+.msg.bot{
+  align-self:flex-start; background:none; color:var(--text);
+  padding:0; border-radius:0;
+}
+
+.bot-chunk{margin:6px 0}
+.bot-name{font-size:12px; color:var(--muted); margin-bottom:4px}
+
+/* Code blocks */
+.code{
+  margin:10px 0; border-radius:10px; overflow:hidden; background:var(--panel);
+  border:1px solid rgba(255,255,255,0.08);
+}
+
+.code-header{
+  display:flex; align-items:center; justify-content:space-between;
+  background:var(--panel-2); padding:8px 10px; gap:8px;
+}
+
+.code-lang{
+  font-size:12px; font-weight:700; color:var(--pink); letter-spacing:.2px;
+}
+
+.copy-btn{
+  appearance:none; border:0; background:transparent; padding:4px; margin:0;
+  cursor:pointer; display:flex; align-items:center; justify-content:center; border-radius:8px;
+  transition:background .15s ease, transform .05s ease;
+}
+
+.copy-btn:hover{background:rgba(255,255,255,0.06)}
+.copy-btn:active{transform:scale(0.96)}
+.copy-btn img{
+  width:16px; height:16px; display:block;
+  filter:invert(66%) sepia(58%) saturate(4200%) hue-rotate(306deg) brightness(102%) contrast(96%); /* pink-ish tint */
+}
+
+pre{
+  margin:0; padding:12px; background:transparent; overflow:auto;
+}
+
+code{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+  font-size:13px;
+}
+
+/* Footer + input */
+.footer{
+  padding:12px; border-top:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.02);
+}
+
+.input-row{
+  display:flex; gap:10px; align-items:center;
+  background:var(--panel-2); border:1px solid rgba(255,255,255,0.08);
+  border-radius:999px; padding:6px 8px;
+}
+
+/* PINK focus ring (no blue) */
+.input-row:focus-within{
+  border-color: color-mix(in srgb, var(--pink) 65%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--pink) 20%, transparent);
+}
+
+.input{
+  flex:1; background:transparent; color:var(--text); border:0; outline:0; height:44px;
+  padding:0 10px; font-size:16px;
+}
+
+.input::placeholder{color:#f2cfe0; opacity:.9}
+
+/* Send button: pink, and arrow/square are white via --send-icon */
+.send{
+  width:44px; height:44px; min-width:44px; min-height:44px;
+  border-radius:50%; border:0; cursor:pointer; display:flex; align-items:center; justify-content:center;
+  background:var(--accent);
+  color:var(--send-icon);
+  font-size:18px; font-weight:900;
+  transition:transform .06s ease, filter .15s ease;
+}
+
+.send:hover{filter:brightness(1.08)}
+.send:active{transform:scale(0.97)}
+.send.typing{animation:pulse 1s infinite}
+
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+@keyframes fade{from{opacity:0; transform:translateY(4px)}to{opacity:1; transform:translateY(0)}}
+.hidden{display:none}
+</style>
 </head>
+
 <body>
-  <header>AI Gemma 2</header>
-  <div id="chat">
-    <div class="typing-intro">What can I help with?</div>
+<div class="app">
+  <div class="header">Nexora Chat</div>
+
+  <div class="chat">
+    <div class="intro" id="intro"><h1>What can I help you with?</h1></div>
+    <div class="scroll" id="scroll"></div>
   </div>
 
-  <div class="input-bar">
-    <textarea id="prompt" rows="2" placeholder="Message AI..."></textarea>
-    <button onclick="sendMessage()">↑</button>
+  <div class="footer">
+    <div class="input-row">
+      <input id="prompt" class="input" placeholder="Message AI..." autocomplete="off" />
+      <button id="send" class="send" title="Send">↑</button>
+    </div>
   </div>
+</div>
 
-  <script>
-    let introPlayed = false;
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 
-    async function sendMessage() {
-      const prompt = document.getElementById("prompt").value;
-      const chat = document.getElementById("chat");
+<script>
+let introVisible = true;
+const scrollEl = document.getElementById("scroll");
+const introEl = document.getElementById("intro");
+const promptEl = document.getElementById("prompt");
+const sendEl = document.getElementById("send");
 
-      if (!introPlayed) {
-        document.querySelector(".typing-intro")?.remove();
-        introPlayed = true;
-      }
+function escapeHtml(s){
+  return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
 
-      const userMsg = document.createElement("div");
-      userMsg.className = "message user";
-      userMsg.textContent = prompt;
-      chat.appendChild(userMsg);
+function formatLang(raw){
+  if(!raw) return "Code";
+  const lower = raw.toLowerCase();
+  return lower.charAt(0).toUpperCase() + lower.slice(1);
+}
 
-      const botWrapper = document.createElement("div");
-      botWrapper.className = "message bot";
+function renderReplyWithCode(text){
+  const re = /```(\w+)?\n([\s\S]*?)```/g;
+  let html = "";
+  let last = 0;
+  let m;
 
-      const botHeader = document.createElement("div");
-      botHeader.className = "bot-header";
-      botHeader.textContent = "Gemma 2-9B-IT";
+  while((m = re.exec(text)) !== null){
+    const preText = text.slice(last, m.index).trim();
+    if(preText) html += `<div class="bot-chunk">${escapeHtml(preText)}</div>`;
 
-      const botMsg = document.createElement("div");
-      botMsg.innerHTML = `<em>Bot is typing</em><span class="loader"></span>`;
+    const langRaw = m[1] || "";
+    const langLabel = formatLang(langRaw);
+    const code = m[2];
 
-      botWrapper.appendChild(botHeader);
-      botWrapper.appendChild(botMsg);
-      chat.appendChild(botWrapper);
-      chat.scrollTop = chat.scrollHeight;
+    html += `
+      <div class="code">
+        <div class="code-header">
+          <span class="code-lang">${escapeHtml(langLabel)}</span>
+          <button class="copy-btn" title="Copy">
+            <img src="assets/copy-svgrepo-com.svg" alt="Copy">
+          </button>
+        </div>
+        <pre><code class="language-${escapeHtml(langRaw)}">${escapeHtml(code)}</code></pre>
+      </div>
+    `;
+    last = re.lastIndex;
+  }
 
-      try {
-        const response = await fetch("https://nexora-learning-logs55.fly.dev/chat", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            model: "openai/gpt-3.5-turbo",
-            messages: [{ role: "user", content: prompt }]
-          })
-        });
+  const postText = text.slice(last).trim();
+  if(postText) html += `<div class="bot-chunk">${escapeHtml(postText)}</div>`;
 
-        const data = await response.json();
-        const reply = data.choices?.[0]?.message?.content || "No response";
-        botMsg.innerHTML = reply;
-        chat.scrollTop = chat.scrollHeight;
-      } catch (err) {
-        botMsg.textContent = "Error: " + err.message;
-      }
-    }
-  </script>
+  return html;
+}
+
+function addUserMessage(text){
+  const div = document.createElement("div");
+  div.className = "msg user";
+  div.textContent = text;
+  scrollEl.appendChild(div);
+  scrollEl.scrollTop = scrollEl.scrollHeight;
+}
+
+function addBotMessage(markup){
+  const wrap = document.createElement("div");
+  wrap.className = "msg bot";
+
+  const name = document.createElement("div");
+  name.className = "bot-name";
+  name.textContent = "Gemma 2-9B";
+
+  const body = document.createElement("div");
+  body.innerHTML = markup;
+
+  wrap.appendChild(name);
+  wrap.appendChild(body);
+  scrollEl.appendChild(wrap);
+  scrollEl.scrollTop = scrollEl.scrollHeight;
+
+  wrap.querySelectorAll(".copy-btn").forEach(btn=>{
+    btn.onclick = () => {
+      const code = btn.closest(".code").querySelector("pre").innerText;
+      navigator.clipboard.writeText(code);
+      const old = btn.innerHTML;
+      btn.textContent = "✅";
+      setTimeout(()=>{ btn.innerHTML = old; }, 1500);
+    };
+  });
+
+  requestAnimationFrame(()=>hljs.highlightAll());
+}
+
+async function sendMessage(){
+  const prompt = promptEl.value.trim();
+  if(!prompt) return;
+
+  if(introVisible){
+    introEl.classList.add("hidden");
+    introVisible = false;
+  }
+
+  addUserMessage(prompt);
+  promptEl.value = "";
+
+  // button typing state (arrow/square both white via --send-icon)
+  sendEl.disabled = true;
+  sendEl.classList.add("typing");
+  const oldLabel = sendEl.textContent;
+  sendEl.textContent = "◻";
+
+  try{
+    const res = await fetch("https://nexora-learning-logs55.fly.dev/chat", {
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body: JSON.stringify({
+        model:"openai/gpt-3.5-turbo",
+        messages:[{ role:"user", content: prompt }]
+      })
+    });
+
+    const data = await res.json();
+    const reply = data.choices?.[0]?.message?.content || "No response";
+    const markup = renderReplyWithCode(reply);
+    addBotMessage(markup);
+
+  }catch(err){
+    addBotMessage(`<div class="bot-chunk">Error: ${escapeHtml(err.message)}</div>`);
+  }finally{
+    sendEl.classList.remove("typing");
+    sendEl.textContent = oldLabel;
+    sendEl.disabled = false;
+    scrollEl.scrollTop = scrollEl.scrollHeight;
+  }
+}
+
+sendEl.addEventListener("click", sendMessage);
+promptEl.addEventListener("keydown", e=>{
+  if(e.key === "Enter") sendMessage();
+});
+</script>
 </body>
 </html>
