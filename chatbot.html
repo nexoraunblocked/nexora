@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nexora Chatbot</title>
+  <title>Nexora Chatbot - Qwen 2.5 7B Free</title>
   <style>
     body { font-family: Arial, sans-serif; background: #f4f4f4; display: flex; flex-direction: column; height: 100vh; margin: 0; }
     #chatbox { flex: 1; overflow-y: auto; padding: 10px; background: #fff; }
@@ -24,7 +24,10 @@
   </div>
 
   <script>
-    const API_KEY = "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"; // ⚠ Replace with your key
+    // ⚠ This key will be visible to anyone who views your page source.
+    // Only safe for private/local use.
+    const API_KEY = "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";
+    const MODEL = "qwen/qwen-2.5-7b-instruct";
 
     async function sendMessage() {
       const input = document.getElementById('input');
@@ -42,7 +45,7 @@
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            model: "openai/gpt-3.5-turbo",
+            model: MODEL,
             messages: [{ role: "user", content: text }]
           })
         });
