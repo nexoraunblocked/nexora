@@ -1,27 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Nexora Chatbot</title>
+  <meta charset="UTF-8" />
+  <title>Nexora Chat UI</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css">
   <style>
-    body { font-family: sans-serif; background: #f9f9f9; padding: 2rem; }
-    textarea, button { width: 100%; margin-top: 1rem; }
-    #response { margin-top: 2rem; white-space: pre-wrap; background: #fff; padding: 1rem; border: 1px solid #ccc; }
+    :root {
+      --page-bg: #000000;
+      --accent-color: #b3006b;
+      --pink-shadow: rgba(255, 105, 180, 0.5);
+      --shadow-opacity: 0.2;
+      --text-color: white;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: var(--page-bg);
+      color: var(--text-color);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .center-message {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      font-weight: bold;
+      color: var(--accent-color);
+      text-shadow: 0 0 10px var(--pink-shadow);
+    }
+
+    .typing-animation {
+      animation: blink 1s steps(1) infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0.3; }
+    }
+
+    .chat-box {
+      padding: 1rem;
+      box-shadow: 0 -5px 20px var(--pink-shadow);
+      background: #1a001f;
+      display: flex;
+      gap: 1rem;
+    }
+
+    textarea {
+      flex: 1;
+      background: #2a0a2e;
+      border: none;
+      border-radius: 12px;
+      padding: 1rem;
+      color: white;
+      resize: none;
+      box-shadow: inset 0 0 10px rgba(255, 255, 255, var(--shadow-opacity));
+    }
+
+    button {
+      background: var(--accent-color);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 0 1.5rem;
+      font-size: 1rem;
+      box-shadow: 0 0 10px var(--pink-shadow);
+      cursor: pointer;
+    }
+
+    .response {
+      padding: 1rem;
+      overflow-y: auto;
+      flex: 1;
+      background: #0a0a0a;
+      box-shadow: inset 0 0 20px var(--pink-shadow);
+    }
+
+    pre code {
+      display: block;
+      padding: 1rem;
+      background: #1a1a1a;
+      border-radius: 12px;
+      box-shadow: 0 0 10px var(--pink-shadow);
+      overflow-x: auto;
+    }
   </style>
 </head>
 <body>
-  <h2>Ask Nexora</h2>
-  <textarea id="prompt" rows="4" placeholder="Type your question..."></textarea>
-  <button onclick="sendMessage()">Send</button>
-  <div id="response"></div>
+  <div class="center-message">
+    <span class="typing-animation">What can I help with?</span>
+  </div>
 
+  <div class="response" id="response"></div>
+
+  <div class="chat-box">
+    <textarea id="prompt" rows="2" placeholder="Type your question..."></textarea>
+    <button onclick="sendMessage()">Send</button>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
   <script>
     async function sendMessage() {
       const prompt = document.getElementById("prompt").value;
       const resBox = document.getElementById("response");
+      resBox.innerHTML = "<em>Bot is typing...</em>";
 
       const payload = {
-        model: "openai/gpt-3.5-turbo", // or any model your proxy supports
+        model: "openai/gpt-3.5-turbo",
         messages: [{ role: "user", content: prompt }]
       };
 
@@ -33,11 +123,36 @@
         });
 
         const data = await response.json();
-        const reply = data.choices?.[0]?.message?.content || "No response received.";
+        const reply = data.choices?.[0]?.message?.content || "No response";
+
+        // Detect code blocks
+        if (reply.includes("```")) {
+          const codeMatch = reply.match(/```(\w*)\n([\s\S]*?)```/);
+          if (codeMatch) {
+            const lang = codeMatch[1] || "plaintext";
+            const code = codeMatch[2];
+            resBox.innerHTML = `<pre><code class="language-${lang}">${escapeHtml(code)}</code></pre>`;
+            hljs.highlightAll();
+            return;
+          }
+        }
+
         resBox.textContent = reply;
       } catch (err) {
         resBox.textContent = "Error: " + err.message;
       }
+    }
+
+    function escapeHtml(text) {
+      return text.replace(/[&<>"']/g, function (m) {
+        return ({
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&#039;'
+        })[m];
+      });
     }
   </script>
 </body>
