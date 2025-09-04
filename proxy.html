@@ -2,45 +2,42 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ultraviolet Search</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Ultraviolet Proxy</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #0f0f0f;
-      color: #fff;
+      margin: 0;
+      height: 100vh;
       display: flex;
       flex-direction: column;
-      height: 100vh;
-      margin: 0;
+      background: #0f0f0f;
+      color: #fff;
+      font-family: Arial, sans-serif;
     }
     .search-container {
-      background: #1a1a1a;
-      padding: 20px 25px;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
       display: flex;
-      gap: 8px;
-      margin: 10px;
+      padding: 16px;
+      background: #111;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
     }
-    input[type="text"] {
+    .search-container input {
       flex: 1;
-      padding: 10px 14px;
-      border: none;
-      border-radius: 4px;
+      padding: 8px 12px;
       font-size: 16px;
+      border: none;
+      border-radius: 4px 0 0 4px;
       outline: none;
     }
-    button {
+    .search-container button {
+      padding: 8px 16px;
       background: #0078ff;
       color: #fff;
       border: none;
-      padding: 10px 16px;
-      border-radius: 4px;
       font-size: 16px;
       cursor: pointer;
+      border-radius: 0 4px 4px 0;
     }
-    button:hover {
+    .search-container button:hover {
       background: #005fcc;
     }
     iframe {
@@ -53,15 +50,13 @@
 <body>
 
   <div class="search-container">
-    <form
-      method="GET"
-      action="https://search.nexoraunblocked.online/service"
-      target="proxy-frame"
-    >
+    <form id="proxyForm" action="/service" method="GET" target="proxyFrame">
       <input
+        id="proxyInput"
         name="url"
         type="text"
-        placeholder="Search DuckDuckGo or type a URL"
+        placeholder="Enter a URL or search term…"
+        autocomplete="off"
         required
       >
       <button type="submit">Go</button>
@@ -69,12 +64,33 @@
   </div>
 
   <iframe
-    name="proxy-frame"
-    src="https://search.nexoraunblocked.online"
+    name="proxyFrame"
+    src="/"
     referrerpolicy="no-referrer"
-    allow="clipboard-read; clipboard-write"
-    sandbox="allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-same-origin allow-scripts allow-downloads">
-  </iframe>
+    sandbox="allow-forms allow-scripts allow-same-origin allow-popups allow-modals allow-downloads allow-pointer-lock allow-presentation"
+  ></iframe>
+
+  <script>
+    (function(){
+      const form  = document.getElementById('proxyForm');
+      const input = document.getElementById('proxyInput');
+
+      form.addEventListener('submit', e => {
+        let v = input.value.trim();
+        // if no scheme or dot → treat as search
+        if (!/^https?:\/\//i.test(v) && v.indexOf('.') === -1) {
+          v = 'https://duckduckgo.com/?q=' + encodeURIComponent(v);
+          input.value = v;
+        } else if (!/^https?:\/\//i.test(v)) {
+          // bare domain or path → force https
+          v = 'https://' + v;
+          input.value = v;
+        }
+        // let the form submit normally to /service?url=…
+      });
+    })();
+  </script>
 
 </body>
 </html>
+
