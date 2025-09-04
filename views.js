@@ -14,3 +14,4 @@ function renderGames()  { loadView('games.html'); }
 function renderMovies() { loadView('movies.html'); }
 function renderProxy()  { loadView('proxy.html'); }
 function renderHacks()  { loadView('hacks.html'); }
+function renderChatbot()  { loadView('chatbot.html'); }
