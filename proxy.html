@@ -2,12 +2,26 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Ultraviolet Proxy</title>
-  <style>
-    :root {
-      --search-height: 64px;
+
+  <!-- 1) UV client runtime and config -->
+  <script src="/uv/uv.bundle.js"></script>
+  <script src="/uv/uv.config.js"></script>
+  <!-- 2) BareMux for wisp/bare transports -->
+  <script src="/baremux/index.js"></script>
+
+  <!-- 3) Register the UV service worker -->
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("/uv/sw.js");
+      });
     }
+  </script>
+
+  <style>
+    :root { --search-h: 64px; }
     body {
       margin: 0;
       height: 100vh;
@@ -19,15 +33,12 @@
     .search-container {
       position: absolute;
       top: 50%;
-      left: 0;
       width: 100%;
-      height: var(--search-height);
       transform: translateY(-50%);
       display: flex;
       justify-content: center;
-      align-items: center;
-      transition: top 0.3s ease, transform 0.3s ease;
-      z-index: 1;
+      transition: top .3s ease, transform .3s ease;
+      z-index: 2;
     }
     .search-bar {
       display: flex;
@@ -58,14 +69,15 @@
     iframe {
       display: none;
       position: absolute;
-      top: var(--search-height);
+      top: var(--search-h);
       left: 0;
       width: 100%;
-      height: calc(100% - var(--search-height));
+      height: calc(100% - var(--search-h));
       border: none;
       opacity: 0;
-      transition: opacity 0.3s ease;
+      transition: opacity .3s ease;
     }
+    /* Slide up the bar and reveal the iframe */
     body.submitted .search-container {
       top: 0;
       transform: translateY(0);
@@ -76,48 +88,64 @@
     }
   </style>
 </head>
-<body>
 
+<body>
   <div class="search-container">
-    <form id="proxyForm">
-      <div class="search-bar">
-        <input
-          id="proxyInput"
-          type="text"
-          placeholder="Search DuckDuckGo or enter URL"
-          autocomplete="off"
-          required
-        />
-        <button type="submit">Go</button>
-      </div>
-    </form>
+    <div class="search-bar">
+      <input
+        id="urlInput"
+        type="text"
+        placeholder="Enter URL or search term"
+        autocomplete="off"
+        required
+      />
+      <button id="searchBtn">Go</button>
+    </div>
   </div>
 
-  <iframe
-    name="proxyFrame"
-    id="proxyFrame"
-    referrerpolicy="no-referrer"
-    sandbox="allow-forms allow-scripts allow-same-origin allow-popups allow-modals allow-downloads allow-pointer-lock allow-presentation"
-  ></iframe>
+  <iframe id="iframeWindow" sandbox="allow-forms allow-scripts allow-same-origin allow-popups"></iframe>
 
   <script>
-    (function(){
-      const form = document.getElementById('proxyForm');
-      const input = document.getElementById('proxyInput');
-      const iframe = document.getElementById('proxyFrame');
-      form.addEventListener('submit', e => {
-        e.preventDefault();
-        let v = input.value.trim();
-        if (!/^https?:\/\//i.test(v) && v.indexOf('.') === -1) {
-          v = 'https://duckduckgo.com/?q=' + encodeURIComponent(v);
-        } else if (!/^https?:\/\//i.test(v)) {
-          v = 'https://' + v;
+    (async () => {
+      // Initialize BareMuxConnection for UV 3.x.x
+      const connection = new BareMux.BareMuxConnection("/baremux/worker.js");
+      const wispUrl = (location.protocol === "https:" ? "wss" : "ws")
+                    + "://" + location.host + "/wisp/";
+      const bareUrl = (location.protocol === "https:" ? "https" : "http")
+                    + "://" + location.host + "/bare/";
+      const encode = __uv$config.encodeUrl;
+      const prefix = __uv$config.prefix;
+
+      // Ensure Enter key works
+      document.getElementById("urlInput").addEventListener("keydown", e => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          document.getElementById("searchBtn").click();
         }
-        iframe.src = '/service?url=' + encodeURIComponent(v);
-        document.body.classList.add('submitted');
+      });
+
+      document.getElementById("searchBtn").addEventListener("click", async e => {
+        e.preventDefault();
+        let raw = document.getElementById("urlInput").value.trim();
+
+        // Search fallback vs HTTPS normalization
+        if (!raw.includes(".") && !/^https?:\/\//i.test(raw)) {
+          raw = "https://duckduckgo.com/?q=" + encodeURIComponent(raw);
+        }
+        else if (!/^https?:\/\//i.test(raw)) {
+          raw = "https://" + raw;
+        }
+
+        // Establish transport if missing (defaults to epoxy/wisp)
+        if (!await connection.getTransport()) {
+          await connection.setTransport("/epoxy/index.mjs", [{ wisp: wispUrl }]);
+        }
+
+        // Point iframe at the UV interception proxy
+        document.getElementById("iframeWindow").src = prefix + encode(raw);
+        document.body.classList.add("submitted");
       });
     })();
   </script>
-
 </body>
 </html>
