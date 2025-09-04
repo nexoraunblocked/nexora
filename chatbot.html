@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Nexora Chat UI</title>
+  <title>AI Gemma 2</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css">
   <style>
     :root {
@@ -10,45 +10,80 @@
       --accent-color: #b3006b;
       --pink-shadow: rgba(255, 105, 180, 0.5);
       --shadow-opacity: 0.2;
-      --text-color: white;
+      --sidebar-gradient: linear-gradient(to bottom, #2a0a2e, #1a001f);
+      --user-blue: #007bff;
     }
 
     body {
       margin: 0;
       font-family: Arial, sans-serif;
       background: var(--page-bg);
-      color: var(--text-color);
+      color: white;
       display: flex;
       flex-direction: column;
       height: 100vh;
       overflow: hidden;
     }
 
-    .center-message {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-      font-weight: bold;
-      color: var(--accent-color);
-      text-shadow: 0 0 10px var(--pink-shadow);
-    }
-
-    .typing-animation {
-      animation: blink 1s steps(1) infinite;
-    }
-
-    @keyframes blink {
-      50% { opacity: 0.3; }
-    }
-
-    .chat-box {
+    header {
+      text-align: center;
       padding: 1rem;
-      box-shadow: 0 -5px 20px var(--pink-shadow);
-      background: #1a001f;
+      font-size: 1.5rem;
+      font-weight: bold;
+      background: var(--sidebar-gradient);
+      box-shadow: 0 0 20px var(--pink-shadow);
+    }
+
+    #chat {
+      flex: 1;
+      padding: 1rem;
+      overflow-y: auto;
+      background: var(--sidebar-gradient);
+      box-shadow: inset 0 0 20px var(--pink-shadow);
+    }
+
+    .message {
+      margin: 1rem 0;
+      line-height: 1.5;
+    }
+
+    .user {
+      background: var(--user-blue);
+      color: white;
+      padding: 0.75rem 1rem;
+      border-radius: 12px;
+      max-width: 80%;
+      align-self: flex-end;
+      box-shadow: 0 0 10px rgba(0, 123, 255, 0.4);
+    }
+
+    .bot {
+      color: white;
+      max-width: 80%;
+      white-space: pre-wrap;
+    }
+
+    .loader {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 3px solid var(--accent-color);
+      border-top: 3px solid transparent;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-left: 8px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .input-bar {
       display: flex;
-      gap: 1rem;
+      padding: 1rem;
+      background: #000000;
+      background: var(--sidebar-gradient);
+      box-shadow: 0 -5px 20px var(--pink-shadow);
     }
 
     textarea {
@@ -71,44 +106,65 @@
       font-size: 1rem;
       box-shadow: 0 0 10px var(--pink-shadow);
       cursor: pointer;
+      margin-left: 1rem;
     }
 
-    .response {
-      padding: 1rem;
-      overflow-y: auto;
-      flex: 1;
-      background: #0a0a0a;
-      box-shadow: inset 0 0 20px var(--pink-shadow);
+    .typing-intro {
+      font-size: 1.5rem;
+      color: var(--accent-color);
+      text-align: center;
+      margin-top: 2rem;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 2px solid var(--accent-color);
+      width: 0;
+      animation: typing 3s steps(22) 1s forwards, blink 0.7s step-end infinite;
     }
 
-    pre code {
-      display: block;
-      padding: 1rem;
-      background: #1a1a1a;
-      border-radius: 12px;
-      box-shadow: 0 0 10px var(--pink-shadow);
-      overflow-x: auto;
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 22ch; }
+    }
+
+    @keyframes blink {
+      50% { border-color: transparent; }
     }
   </style>
 </head>
 <body>
-  <div class="center-message">
-    <span class="typing-animation">What can I help with?</span>
+  <header>AI Gemma 2</header>
+  <div id="chat">
+    <div class="typing-intro">What can I help with?</div>
   </div>
 
-  <div class="response" id="response"></div>
-
-  <div class="chat-box">
+  <div class="input-bar">
     <textarea id="prompt" rows="2" placeholder="Type your question..."></textarea>
     <button onclick="sendMessage()">Send</button>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
   <script>
+    let introPlayed = false;
+
     async function sendMessage() {
       const prompt = document.getElementById("prompt").value;
-      const resBox = document.getElementById("response");
-      resBox.innerHTML = "<em>Bot is typing...</em>";
+      const chat = document.getElementById("chat");
+
+      if (!introPlayed) {
+        document.querySelector(".typing-intro")?.remove();
+        introPlayed = true;
+      }
+
+      const userMsg = document.createElement("div");
+      userMsg.className = "message user";
+      userMsg.textContent = prompt;
+      chat.appendChild(userMsg);
+
+      const botMsg = document.createElement("div");
+      botMsg.className = "message bot";
+      botMsg.innerHTML = `<em>Bot is typing</em><span class="loader"></span>`;
+      chat.appendChild(botMsg);
+      chat.scrollTop = chat.scrollHeight;
 
       const payload = {
         model: "openai/gpt-3.5-turbo",
@@ -125,21 +181,21 @@
         const data = await response.json();
         const reply = data.choices?.[0]?.message?.content || "No response";
 
-        // Detect code blocks
         if (reply.includes("```")) {
           const codeMatch = reply.match(/```(\w*)\n([\s\S]*?)```/);
           if (codeMatch) {
             const lang = codeMatch[1] || "plaintext";
             const code = codeMatch[2];
-            resBox.innerHTML = `<pre><code class="language-${lang}">${escapeHtml(code)}</code></pre>`;
+            botMsg.innerHTML = `<pre><code class="language-${lang}">${escapeHtml(code)}</code></pre>`;
             hljs.highlightAll();
             return;
           }
         }
 
-        resBox.textContent = reply;
+        botMsg.innerHTML = reply;
+        chat.scrollTop = chat.scrollHeight;
       } catch (err) {
-        resBox.textContent = "Error: " + err.message;
+        botMsg.textContent = "Error: " + err.message;
       }
     }
 
