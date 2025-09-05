@@ -193,140 +193,207 @@ code{
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 
 <script>
-let introVisible = true;
-const scrollEl = document.getElementById("scroll");
-const introEl = document.getElementById("intro");
-const promptEl = document.getElementById("prompt");
-const sendEl = document.getElementById("send");
+(function(){
+  if(window.NexoraChat) return; // already initialized
 
-function escapeHtml(s){
-  return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-}
+  // Helpers (safe to call multiple times)
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
 
-function formatLang(raw){
-  if(!raw) return "Code";
-  const lower = raw.toLowerCase();
-  return lower.charAt(0).toUpperCase() + lower.slice(1);
-}
+  function formatLang(raw){
+    if(!raw) return "Code";
+    const lower = raw.toLowerCase();
+    return lower.charAt(0).toUpperCase() + lower.slice(1);
+  }
 
-function renderReplyWithCode(text){
-  const re = /```(\w+)?\n([\s\S]*?)```/g;
-  let html = "";
-  let last = 0;
-  let m;
+  function renderReplyWithCode(text){
+    const re = /```(\w+)?\n([\s\S]*?)```/g;
+    let html = "";
+    let last = 0;
+    let m;
 
-  while((m = re.exec(text)) !== null){
-    const preText = text.slice(last, m.index).trim();
-    if(preText) html += `<div class="bot-chunk">${escapeHtml(preText)}</div>`;
+    while((m = re.exec(text)) !== null){
+      const preText = text.slice(last, m.index).trim();
+      if(preText) html += `<div class="bot-chunk">${escapeHtml(preText)}</div>`;
 
-    const langRaw = m[1] || "";
-    const langLabel = formatLang(langRaw);
-    const code = m[2];
+      const langRaw = m[1] || "";
+      const langLabel = formatLang(langRaw);
+      const code = m[2];
 
-    html += `
-      <div class="code">
-        <div class="code-header">
-          <span class="code-lang">${escapeHtml(langLabel)}</span>
-          <button class="copy-btn" title="Copy">
-            <img src="assets/copy-svgrepo-com.svg" alt="Copy">
-          </button>
+      html += `
+        <div class="code">
+          <div class="code-header">
+            <span class="code-lang">${escapeHtml(langLabel)}</span>
+            <button class="copy-btn" title="Copy">
+              <img src="assets/copy-svgrepo-com.svg" alt="Copy">
+            </button>
+          </div>
+          <pre><code class="language-${escapeHtml(langRaw)}">${escapeHtml(code)}</code></pre>
         </div>
-        <pre><code class="language-${escapeHtml(langRaw)}">${escapeHtml(code)}</code></pre>
-      </div>
-    `;
-    last = re.lastIndex;
+      `;
+      last = re.lastIndex;
+    }
+
+    const postText = text.slice(last).trim();
+    if(postText) html += `<div class="bot-chunk">${escapeHtml(postText)}</div>`;
+
+    return html;
   }
 
-  const postText = text.slice(last).trim();
-  if(postText) html += `<div class="bot-chunk">${escapeHtml(postText)}</div>`;
-
-  return html;
-}
-
-function addUserMessage(text){
-  const div = document.createElement("div");
-  div.className = "msg user";
-  div.textContent = text;
-  scrollEl.appendChild(div);
-  scrollEl.scrollTop = scrollEl.scrollHeight;
-}
-
-function addBotMessage(markup){
-  const wrap = document.createElement("div");
-  wrap.className = "msg bot";
-
-  const name = document.createElement("div");
-  name.className = "bot-name";
-  name.textContent = "Gemma 2-9B";
-
-  const body = document.createElement("div");
-  body.innerHTML = markup;
-
-  wrap.appendChild(name);
-  wrap.appendChild(body);
-  scrollEl.appendChild(wrap);
-  scrollEl.scrollTop = scrollEl.scrollHeight;
-
-  wrap.querySelectorAll(".copy-btn").forEach(btn=>{
-    btn.onclick = () => {
-      const code = btn.closest(".code").querySelector("pre").innerText;
-      navigator.clipboard.writeText(code);
-      const old = btn.innerHTML;
-      btn.textContent = "✅";
-      setTimeout(()=>{ btn.innerHTML = old; }, 1500);
+  // DOM utility to get elements relative to a root
+  function getEls(root){
+    root = root || document;
+    return {
+      scrollEl: (root.querySelector ? root.querySelector("#scroll") : null) || document.querySelector("#scroll"),
+      introEl: (root.querySelector ? root.querySelector("#intro") : null) || document.querySelector("#intro"),
+      promptEl: (root.querySelector ? root.querySelector("#prompt") : null) || document.querySelector("#prompt"),
+      sendEl: (root.querySelector ? root.querySelector("#send") : null) || document.querySelector("#send")
     };
-  });
-
-  requestAnimationFrame(()=>hljs.highlightAll());
-}
-
-async function sendMessage(){
-  const prompt = promptEl.value.trim();
-  if(!prompt) return;
-
-  if(introVisible){
-    introEl.classList.add("hidden");
-    introVisible = false;
   }
 
-  addUserMessage(prompt);
-  promptEl.value = "";
-
-  // button typing state (arrow/square both white via --send-icon)
-  sendEl.disabled = true;
-  sendEl.classList.add("typing");
-  const oldLabel = sendEl.textContent;
-  sendEl.textContent = "◻";
-
-  try{
-    const res = await fetch("https://nexora-learning-logs55.fly.dev/chat", {
-      method:"POST",
-      headers:{ "Content-Type":"application/json" },
-      body: JSON.stringify({
-        model:"openai/gpt-3.5-turbo",
-        messages:[{ role:"user", content: prompt }]
-      })
-    });
-
-    const data = await res.json();
-    const reply = data.choices?.[0]?.message?.content || "No response";
-    const markup = renderReplyWithCode(reply);
-    addBotMessage(markup);
-
-  }catch(err){
-    addBotMessage(`<div class="bot-chunk">Error: ${escapeHtml(err.message)}</div>`);
-  }finally{
-    sendEl.classList.remove("typing");
-    sendEl.textContent = oldLabel;
-    sendEl.disabled = false;
+  function addUserMessage(text){
+    const { scrollEl } = getEls();
+    if(!scrollEl) return;
+    const div = document.createElement("div");
+    div.className = "msg user";
+    div.textContent = text;
+    scrollEl.appendChild(div);
     scrollEl.scrollTop = scrollEl.scrollHeight;
   }
-}
 
-sendEl.addEventListener("click", sendMessage);
-promptEl.addEventListener("keydown", e=>{
-  if(e.key === "Enter") sendMessage();
-});
+  function addBotMessage(markup){
+    const { scrollEl } = getEls();
+    if(!scrollEl) return;
+
+    const wrap = document.createElement("div");
+    wrap.className = "msg bot";
+
+    const name = document.createElement("div");
+    name.className = "bot-name";
+    name.textContent = "Gemma 2-9B";
+
+    const body = document.createElement("div");
+    body.innerHTML = markup;
+
+    wrap.appendChild(name);
+    wrap.appendChild(body);
+    scrollEl.appendChild(wrap);
+    scrollEl.scrollTop = scrollEl.scrollHeight;
+
+    wrap.querySelectorAll(".copy-btn").forEach(btn=>{
+      if(btn.dataset.nexoraCopy) return;
+      btn.dataset.nexoraCopy = "1";
+      btn.onclick = () => {
+        const code = btn.closest(".code").querySelector("pre").innerText;
+        navigator.clipboard.writeText(code).catch(()=>{});
+        const old = btn.innerHTML;
+        btn.textContent = "✅";
+        setTimeout(()=>{ btn.innerHTML = old; }, 1500);
+      };
+    });
+
+    // highlight any newly added code blocks
+    requestAnimationFrame(()=>{ if(window.hljs) hljs.highlightAll(); });
+  }
+
+  async function sendMessage(){
+    const { introEl, promptEl, sendEl, scrollEl } = getEls();
+    if(!promptEl || !sendEl) return;
+
+    const prompt = promptEl.value.trim();
+    if(!prompt) return;
+
+    if(introEl && !introEl.classList.contains("hidden")){
+      introEl.classList.add("hidden");
+    }
+
+    addUserMessage(prompt);
+    promptEl.value = "";
+
+    // button typing state
+    sendEl.disabled = true;
+    sendEl.classList.add("typing");
+    const oldLabel = sendEl.textContent;
+    sendEl.textContent = "◻";
+
+    try{
+      const res = await fetch("https://nexora-learning-logs55.fly.dev/chat", {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({
+          model:"openai/gpt-3.5-turbo",
+          messages:[{ role:"user", content: prompt }]
+        })
+      });
+
+      const data = await res.json();
+      const reply = data.choices?.[0]?.message?.content || "No response";
+      const markup = renderReplyWithCode(reply);
+      addBotMessage(markup);
+
+    }catch(err){
+      addBotMessage(`<div class="bot-chunk">Error: ${escapeHtml(err?.message || String(err))}</div>`);
+    }finally{
+      sendEl.classList.remove("typing");
+      sendEl.textContent = oldLabel;
+      sendEl.disabled = false;
+      if(scrollEl) scrollEl.scrollTop = scrollEl.scrollHeight;
+    }
+  }
+
+  // Attach listeners to elements inside a root. Marks send button to avoid double-binding.
+  function attachTo(root){
+    const { promptEl, sendEl } = getEls(root);
+    if(!promptEl || !sendEl) return false;
+    if(sendEl.dataset.nexoraAttached) return true;
+
+    sendEl.addEventListener("click", sendMessage);
+    promptEl.addEventListener("keydown", function(e){
+      if(e.key === "Enter") sendMessage();
+    });
+
+    sendEl.dataset.nexoraAttached = "1";
+    return true;
+  }
+
+  // Public API
+  window.NexoraChat = {
+    init(root){
+      try{
+        attachTo(root && root instanceof Element ? root : document);
+      }catch(e){}
+    }
+  };
+
+  // Auto-initialize immediately and on DOMContentLoaded (covers direct file open)
+  window.NexoraChat.init(document);
+  if(document.readyState !== "complete"){
+    document.addEventListener("DOMContentLoaded", ()=>window.NexoraChat.init(document));
+  }
+
+  // Watch for SPA DOM insertions that include the chat elements and auto-init them
+  const mo = new MutationObserver(mutations=>{
+    for(const m of mutations){
+      for(const n of m.addedNodes){
+        if(!(n instanceof HTMLElement)) continue;
+        if(n.querySelector && (n.querySelector("#send") || n.querySelector("#prompt") || n.querySelector(".app"))){
+          window.NexoraChat.init(n);
+        } else if(n.id === "send" || n.id === "prompt" || n.classList?.contains("app")){
+          window.NexoraChat.init(document);
+        }
+      }
+    }
+  });
+
+  // start observing body; if body not ready, try again shortly
+  const startObserve = ()=>{
+    if(document.body) mo.observe(document.body, { childList:true, subtree:true });
+    else setTimeout(startObserve, 50);
+  };
+  startObserve();
+
+})();
 </script>
 </body>
 </html>
