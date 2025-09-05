@@ -301,6 +301,9 @@ code{
     const { introEl, promptEl, sendEl, scrollEl } = getEls();
     if(!promptEl || !sendEl) return;
 
+    // Prevent duplicate sends if button is already disabled (in-flight)
+    if(sendEl.disabled) return;
+
     const prompt = promptEl.value.trim();
     if(!prompt) return;
 
@@ -348,9 +351,31 @@ code{
     if(!promptEl || !sendEl) return false;
     if(sendEl.dataset.nexoraAttached) return true;
 
+    // click always sends
     sendEl.addEventListener("click", sendMessage);
+
+    // Track IME/composition so Enter from IME doesn't trigger a send
+    promptEl.addEventListener("compositionstart", ()=> { promptEl.dataset.nexoraComposing = "1"; });
+    promptEl.addEventListener("compositionend", ()=> { delete promptEl.dataset.nexoraComposing; });
+
+    // Primary handler: keydown (robust checks for key/code/keyCode). Prevent default to avoid form submit.
     promptEl.addEventListener("keydown", function(e){
-      if(e.key === "Enter") sendMessage();
+      if(promptEl.dataset.nexoraComposing) return; // ignore while composing (IME)
+      const isEnter = e.key === "Enter" || e.code === "Enter" || e.keyCode === 13;
+      if(!isEnter) return;
+      // allow Shift+Enter to be a newline (if you later change to textarea), send only on Enter alone
+      if(e.shiftKey) return;
+      e.preventDefault();
+      sendMessage();
+    });
+
+    // Fallback for environments where keypress is still relevant
+    promptEl.addEventListener("keypress", function(e){
+      if(promptEl.dataset.nexoraComposing) return;
+      const isEnter = e.key === "Enter" || e.keyCode === 13;
+      if(!isEnter) return;
+      e.preventDefault();
+      sendMessage();
     });
 
     sendEl.dataset.nexoraAttached = "1";
