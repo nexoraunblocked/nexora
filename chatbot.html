@@ -171,33 +171,54 @@ code{
 @keyframes fade{from{opacity:0; transform:translateY(4px)}to{opacity:1; transform:translateY(0)}}
 .hidden{display:none}
 
-/* typing indicator (spinner + text) */
+/* typing indicator (spinner + text) — make it inline, no box */
 .typing-indicator {
-  display:flex;
+  display:inline-flex;
   align-items:center;
-  gap:10px;
+  gap:8px;
   color:var(--muted);
-  padding:6px 10px;
-  border-radius:10px;
-  background:rgba(255,255,255,0.01);
+  padding:0;
+  border-radius:0;
+  background:transparent;
   max-width:72%;
+  line-height:1;
 }
-.typing-indicator .spinner{
-  width:14px; height:14px; border:2px solid rgba(255,255,255,0.12);
-  border-top-color:var(--pink); border-radius:50%; animation:spin 1s linear infinite;
-}
-@keyframes spin{ to{ transform:rotate(360deg); } }
 
-/* intro typing cursor */
+/* Replace previous roller with the new loader, using theme color (--pink) */
+.loader {
+  width: 2.6rem;           /* reasonable inline size */
+  padding: 0.4rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--pink);
+  --sp:
+    conic-gradient(#0000 10%, #000),
+    linear-gradient(#000 0 0) content-box;
+  -webkit-mask: var(--sp);
+          mask: var(--sp);
+  -webkit-mask-composite: source-out;
+          mask-composite: subtract;
+  animation: SP 1s infinite linear;
+  display:inline-block;
+  vertical-align:middle;
+}
+@keyframes SP { to { transform: rotate(1turn); } }
+
+/* intro typing cursor: thinner, slightly taller than the text, non-blinking */
 .intro h1::after{
   content: '';
   display:inline-block;
-  width:8px; height:18px; margin-left:6px;
+  width:2px;            /* thinner */
+  height:1.2em;         /* a bit taller than the line of text */
+  margin-left:6px;
   background:var(--pink);
-  vertical-align:bottom;
-  animation:blink 1s steps(1) infinite;
-  border-radius:2px;
+  vertical-align:middle;
+  border-radius:1px;
+  transform: translateY(-0.06em); /* center relative to glyphs */
+  /* no blink animation - cursor remains visible while intro is active */
 }
+
+/* remove blink keyframes usage for the intro cursor */
 @keyframes blink{ 0%,50%{ opacity:1 } 51%,100%{ opacity:0 } }
 </style>
 </head>
@@ -406,7 +427,8 @@ code{
     name.textContent = 'Gemma 2-9B';
 
     const body = document.createElement('div');
-    body.innerHTML = `<div class="typing-indicator"><div class="spinner" aria-hidden="true"></div><div>Typing...</div></div>`;
+    // use the new loader spinner + "Typing..." label
+    body.innerHTML = `<div class="typing-indicator"><div class="loader" aria-hidden="true"></div><div>Typing...</div></div>`;
 
     wrap.appendChild(name);
     wrap.appendChild(body);
@@ -490,10 +512,10 @@ code{
     promptEl.addEventListener("compositionstart", ()=> { promptEl.dataset.nexoraComposing = "1"; });
     promptEl.addEventListener("compositionend", ()=> { delete promptEl.dataset.nexoraComposing; });
 
-    // stop intro when user focuses or types in the prompt
-    promptEl.addEventListener("focus", ()=> stopIntroLoop(root));
-    promptEl.addEventListener("input", ()=> stopIntroLoop(root));
-    promptEl.addEventListener("keydown", ()=> stopIntroLoop(root));
+    // Removed: stop intro on focus/input/keydown so intro keeps animating until user sends
+    // promptEl.addEventListener("focus", ()=> stopIntroLoop(root));
+    // promptEl.addEventListener("input", ()=> stopIntroLoop(root));
+    // promptEl.addEventListener("keydown", ()=> stopIntroLoop(root));
 
     // Primary handler: keydown (robust checks for key/code/keyCode). Prevent default to avoid form submit.
     promptEl.addEventListener("keydown", function(e){
