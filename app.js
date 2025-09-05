@@ -6,7 +6,7 @@ const routes = {
   '/movies':  renderMovies,
   '/proxy':   renderProxy,
   '/hacks':   renderHacks,
-  '/chatbot': renderChatbot // Added Chatbot route
+  '/chatbot': renderChatbot
 };
 
 function navigate(path) {
@@ -19,7 +19,6 @@ function navigate(path) {
   }
 }
 
-// Sidebar link handling
 document.querySelectorAll('.sidebar a').forEach(link => {
   link.addEventListener('click', e => {
     e.preventDefault();
@@ -27,12 +26,10 @@ document.querySelectorAll('.sidebar a').forEach(link => {
   });
 });
 
-// Back/forward button handling
 window.onpopstate = () => {
   const path = location.pathname;
   (routes[path] || renderHome)();
 };
 
-// Initial load
 const initialPath = location.pathname;
 (routes[initialPath] || renderHome)();
