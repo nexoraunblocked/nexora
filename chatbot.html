@@ -170,6 +170,35 @@ code{
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
 @keyframes fade{from{opacity:0; transform:translateY(4px)}to{opacity:1; transform:translateY(0)}}
 .hidden{display:none}
+
+/* typing indicator (spinner + text) */
+.typing-indicator {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  color:var(--muted);
+  padding:6px 10px;
+  border-radius:10px;
+  background:rgba(255,255,255,0.01);
+  max-width:72%;
+}
+.typing-indicator .spinner{
+  width:14px; height:14px; border:2px solid rgba(255,255,255,0.12);
+  border-top-color:var(--pink); border-radius:50%; animation:spin 1s linear infinite;
+}
+@keyframes spin{ to{ transform:rotate(360deg); } }
+
+/* intro typing cursor */
+.intro h1::after{
+  content: '';
+  display:inline-block;
+  width:8px; height:18px; margin-left:6px;
+  background:var(--pink);
+  vertical-align:bottom;
+  animation:blink 1s steps(1) infinite;
+  border-radius:2px;
+}
+@keyframes blink{ 0%,50%{ opacity:1 } 51%,100%{ opacity:0 } }
 </style>
 </head>
 
@@ -297,6 +326,99 @@ code{
     requestAnimationFrame(()=>{ if(window.hljs) hljs.highlightAll(); });
   }
 
+  // Intro typing loop: types text, then backspaces, loops until stopped
+  const introState = new WeakMap(); // map rootElement->controller
+
+  function startIntroLoop(root){
+    const els = getEls(root);
+    const introEl = els.introEl;
+    if(!introEl) return;
+    if(introState.has(introEl)) return; // already running
+
+    const h1 = introEl.querySelector('h1');
+    if(!h1) return;
+
+    const text = h1.textContent.trim() || "What can I help you with?";
+    h1.textContent = '';
+    let pos = 0;
+    let deleting = false;
+    let speed = 80;
+    let timer = null;
+
+    function step(){
+      if(!introEl || !h1) return stop();
+      if(!deleting){
+        pos++;
+        h1.textContent = text.slice(0,pos);
+        if(pos >= text.length){
+          // pause before deleting
+          deleting = true;
+          clearTimeout(timer);
+          timer = setTimeout(step, 900);
+          return;
+        }
+      } else {
+        pos--;
+        h1.textContent = text.slice(0,pos);
+        if(pos <= 0){
+          deleting = false;
+          clearTimeout(timer);
+          timer = setTimeout(step, 500);
+          return;
+        }
+      }
+      timer = setTimeout(step, deleting ? speed/2 : speed);
+    }
+
+    function stop(){
+      if(timer) clearTimeout(timer);
+      introState.delete(introEl);
+      // restore full text if element still present
+      if(h1) h1.textContent = text;
+      introEl.classList.remove('nexora-intro-running');
+    }
+
+    introState.set(introEl, { stop });
+    introEl.classList.add('nexora-intro-running');
+    timer = setTimeout(step, 500);
+  }
+
+  function stopIntroLoop(root){
+    const els = getEls(root);
+    const introEl = els.introEl;
+    if(!introEl) return;
+    const ctl = introState.get(introEl);
+    if(ctl && typeof ctl.stop === 'function') ctl.stop();
+  }
+
+  // Typing indicator (visible while waiting for bot response)
+  function showTypingIndicator(){
+    const scrollEl = document.querySelector('#scroll');
+    if(!scrollEl) return;
+    // don't add if already present
+    if(document.getElementById('nexora-typing')) return;
+    const wrap = document.createElement('div');
+    wrap.className = 'msg bot';
+    wrap.id = 'nexora-typing';
+
+    const name = document.createElement('div');
+    name.className = 'bot-name';
+    name.textContent = 'Gemma 2-9B';
+
+    const body = document.createElement('div');
+    body.innerHTML = `<div class="typing-indicator"><div class="spinner" aria-hidden="true"></div><div>Typing...</div></div>`;
+
+    wrap.appendChild(name);
+    wrap.appendChild(body);
+    scrollEl.appendChild(wrap);
+    scrollEl.scrollTop = scrollEl.scrollHeight;
+  }
+
+  function hideTypingIndicator(){
+    const el = document.getElementById('nexora-typing');
+    if(el && el.parentNode) el.parentNode.removeChild(el);
+  }
+
   async function sendMessage(){
     const { introEl, promptEl, sendEl, scrollEl } = getEls();
     if(!promptEl || !sendEl) return;
@@ -306,6 +428,9 @@ code{
 
     const prompt = promptEl.value.trim();
     if(!prompt) return;
+
+    // stop intro immediately once the user sends
+    stopIntroLoop(document);
 
     if(introEl && !introEl.classList.contains("hidden")){
       introEl.classList.add("hidden");
@@ -320,6 +445,9 @@ code{
     const oldLabel = sendEl.textContent;
     sendEl.textContent = "◻";
 
+    // show chat typing indicator
+    showTypingIndicator();
+
     try{
       const res = await fetch("https://nexora-learning-logs55.fly.dev/chat", {
         method:"POST",
@@ -333,9 +461,13 @@ code{
       const data = await res.json();
       const reply = data.choices?.[0]?.message?.content || "No response";
       const markup = renderReplyWithCode(reply);
+
+      // hide typing indicator, then append the bot reply
+      hideTypingIndicator();
       addBotMessage(markup);
 
     }catch(err){
+      hideTypingIndicator();
       addBotMessage(`<div class="bot-chunk">Error: ${escapeHtml(err?.message || String(err))}</div>`);
     }finally{
       sendEl.classList.remove("typing");
@@ -358,6 +490,11 @@ code{
     promptEl.addEventListener("compositionstart", ()=> { promptEl.dataset.nexoraComposing = "1"; });
     promptEl.addEventListener("compositionend", ()=> { delete promptEl.dataset.nexoraComposing; });
 
+    // stop intro when user focuses or types in the prompt
+    promptEl.addEventListener("focus", ()=> stopIntroLoop(root));
+    promptEl.addEventListener("input", ()=> stopIntroLoop(root));
+    promptEl.addEventListener("keydown", ()=> stopIntroLoop(root));
+
     // Primary handler: keydown (robust checks for key/code/keyCode). Prevent default to avoid form submit.
     promptEl.addEventListener("keydown", function(e){
       if(promptEl.dataset.nexoraComposing) return; // ignore while composing (IME)
@@ -379,6 +516,10 @@ code{
     });
 
     sendEl.dataset.nexoraAttached = "1";
+
+    // Start the intro typing loop for this root (if present)
+    startIntroLoop(root);
+
     return true;
   }
 
