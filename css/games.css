@@ -124,7 +124,6 @@ body {
   justify-content: center;
   align-items: center;
   padding: 80px 20px 20px;
-  min-height: calc(100vh - 100px);
   background: var(--page-bg);
 }
 
@@ -138,8 +137,8 @@ body {
 
 #gameContainer {
   width: 100%;
-  max-width: 1200px;      
-  aspect-ratio: 16 / 9;   
+  max-width: 1200px;
+  aspect-ratio: 16 / 9;
   background: var(--panel);
   border: 2px solid var(--panel-2);
   border-radius: var(--radius);
@@ -201,7 +200,6 @@ body {
   background: linear-gradient(145deg, var(--panel-2) 0%, var(--panel) 100%);
   border-radius: var(--radius);
   padding: 16px 32px;
-  /* accent shadow for neumorphic vibe */
   box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.4), 0 0 10px var(--pink-shadow);
 }
 

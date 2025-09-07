@@ -7,11 +7,6 @@
   <link rel="stylesheet" href="css/games.css" />
 </head>
 <body>
-
-  <!--
-    Top and side padding leave room for AdSense.
-    Main loader centered and fills available space.
-  -->
   <div class="loader-page">
     <div class="loader-wrapper">
       <div id="gameContainer"></div>
@@ -46,7 +41,7 @@
       document.getElementById("playBtn").onclick = () => {
         const iframe = document.createElement("iframe");
         iframe.src = currentGame.file;
-        iframe.allowFullscreen = true;
+        iframe.setAttribute("allowfullscreen", "");
         iframe.frameBorder = 0;
         iframe.className = "game-iframe";
         container.innerHTML = "";
