@@ -27,14 +27,14 @@
     const games = [
       {
         title: "1v1.Lol",
-        file: "cl1v1lol.html",
+        file: "games/cl1v1lol.html",
         thumbnail: "assets/thumbnails/1v1lol.png"
       }
     ];
 
     sessionStorage.setItem("gamesList", JSON.stringify(games));
 
-    function renderGames(filter = "") {
+    function initGames(filter = "") {
       const grid = document.getElementById("gameGrid");
       grid.innerHTML = "";
       games
@@ -60,9 +60,9 @@
 
     document
       .getElementById("searchInput")
-      .addEventListener("input", e => renderGames(e.target.value));
+      .addEventListener("input", e => initGames(e.target.value));
 
-    renderGames();
+    initGames();
   </script>
 </body>
 </html>

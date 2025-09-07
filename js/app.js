@@ -2,7 +2,7 @@ const app = document.getElementById('app');
 
 const routes = {
   '/home':    renderHome,
-  '/games':   renderGames,
+  '/games':   renderGamesRoute,
   '/movies':  renderMovies,
   '/proxy':   renderProxy,
   '/hacks':   renderHacks,
@@ -36,9 +36,9 @@ const initialPath = location.pathname;
 (routes[initialPath] || renderHome)();
 
 function renderHome()    { loadView('home.html'); }
-function renderGames()   { loadView('games.html'); }
 function renderMovies()  { loadView('movies.html'); }
 function renderProxy()   { loadView('proxy.html'); }
 function renderHacks()   { loadView('hacks.html'); }
 function renderChatbot() { loadView('chatbot.html'); }
 function renderLoader()  { loadView('gameloader.html'); }
+function renderGamesRoute() { loadView('games.html'); }
