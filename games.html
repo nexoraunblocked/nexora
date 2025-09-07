@@ -24,10 +24,11 @@
   <div class="grid" id="gameGrid"></div>
 
   <script>
+  (function(){
     const games = [
       {
         title: "1v1.Lol",
-        file: "games/cl1v1lol.html",
+        file: "cl1v1lol.html",
         thumbnail: "assets/thumbnails/1v1lol.png"
       }
     ];
@@ -63,6 +64,8 @@
       .addEventListener("input", e => initGames(e.target.value));
 
     initGames();
+  })();
   </script>
+
 </body>
 </html>
