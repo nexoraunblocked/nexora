@@ -3,5 +3,15 @@
     "title": "1v1.Lol",
     "file": "games/cl1v1lol.html",
     "thumbnail": "assets/thumbnails/1v1lol.png"
+  },
+  {
+    "title": "2048",
+    "file": "games/cl2024.html",
+    "thumbnail": "assets/thumbnails/2024.png"
+  },
+  {
+    "title": "Achillies",
+    "file": "games/clachillies2.html",
+    "thumbnail": "assets/thumbnails/achillies.png"
   }
 ]
