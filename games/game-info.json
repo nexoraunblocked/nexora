@@ -7,11 +7,36 @@
   {
     "title": "2048",
     "file": "games/cl2024.html",
-    "thumbnail": "assets/thumbnails/2024.png"
+    "thumbnail": "assets/thumbnails/2048.png"
   },
   {
     "title": "Achillies",
     "file": "games/clachillies2.html",
     "thumbnail": "assets/thumbnails/achillies.png"
+  },
+  {
+    "title": "Agar.io",
+    "file": "games/clagariolite.html",
+    "thumbnail": "assets/thumbnails/agario.png"
+  },
+  {
+    "title": "Ages of Conflict",
+    "file": "games/clagesofconflict.html",
+    "thumbnail": "assets/thumbnails/ageofconflict.png"
+  },
+  {
+    "title": "Backrooms",
+    "file": "games/clbackrooms.html",
+    "thumbnail": "assets/thumbnails/backrooms.png"
+  },
+  {
+    "title": "Bad Piggies",
+    "file": "games/clbadpiggies.html",
+    "thumbnail": "assets/thumbnails/badpiggies.jpg"
+  },
+  {
+    "title": "Baldi's Basics",
+    "file": "games/clbaldisbasics.html",
+    "thumbnail": "assets/thumbnails/baldisbasics.jpg"
   }
 ]
