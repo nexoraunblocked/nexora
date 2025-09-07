@@ -24,6 +24,7 @@
   <div class="grid" id="gameGrid"></div>
 
   <script>
+    // your master list
     const games = [
       {
         title: "1v1.Lol",
@@ -32,6 +33,9 @@
       }
       // add more game objects here
     ];
+
+    // persist the full list for the loader page
+    sessionStorage.setItem("gamesList", JSON.stringify(games));
 
     function renderGames(filter = "") {
       const grid = document.getElementById("gameGrid");
@@ -42,7 +46,10 @@
           const card = document.createElement("div");
           card.className = "game-card";
           card.onclick = () => {
-            window.location.href = `gameloader.html?game=${encodeURIComponent(game.file)}`;
+            // store only the clicked game
+            sessionStorage.setItem("currentGame", JSON.stringify(game));
+            // navigate to loader
+            window.location.href = "gameloader.html";
           };
           const img = document.createElement("img");
           img.src = game.thumbnail;
