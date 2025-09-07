@@ -1,125 +1,178 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Game Selector</title>
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        background: #000000;
-        color: #fff;
-        margin: 0;
-        padding: 0;
-    }
+:root{
+  --page-bg:#000000;
+  --panel:#0f1012;
+  --panel-2:#141518;
 
-    .search-bar {
-        padding: 12px;
-        background: rgba(255,255,255,0.08);
-        border-radius: 12px;
-        margin: 1rem;
-        position: sticky;
-        top: 0;
-        z-index: 10;
-    }
+  --pink:#ff4da6;
+  --pink-deep:#b3006b;
+  --pink-shadow: rgba(255, 105, 180, 0.5);
 
-    .search-bar input {
-        width: 100%;
-        font-size: 1rem;
-        border: none;
-        border-radius: 12px;
-        outline: none;
-        padding: 12px;
-        background: rgba(255,255,255,0.06);
-        color: rgba(255,105,180,0.5);
-        transition: box-shadow 0.2s ease;
-    }
+  --accent: var(--pink);
+  --send-icon:#ffffff;
 
-    .search-bar input::placeholder {
-        color: rgba(255,105,180,0.35);
-    }
+  --text:#e8e8ea;
+  --muted:#9aa0a6;
 
-    .search-bar input:focus {
-        box-shadow: 0 0 12px rgba(255, 105, 180, 0.5);
-    }
+  --radius:12px;
+}
 
-    .grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        gap: 1.5rem;
-        padding: 1.5rem;
-    }
+*{box-sizing:border-box}
 
-    .game-card {
-        position: relative;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 4px 20px rgba(255, 105, 180, 0.5);
-        cursor: pointer;
-        transition: transform 0.2s ease;
-    }
+body{
+  margin:0;
+  background:var(--page-bg);
+  color:var(--text);
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
+}
 
-    .game-card:hover {
-        transform: scale(1.03);
-    }
+.search-bar{
+  position:sticky;
+  top:0;
+  z-index:10;
+  padding:12px;
+  background:linear-gradient(to bottom, rgba(0,0,0,0.75), rgba(0,0,0,0));
+  backdrop-filter:saturate(120%) blur(2px);
+}
 
-    .game-card img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-    }
+.input-row{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  background:var(--panel-2);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:999px;
+  padding:6px 8px;
+}
 
-    .game-title {
-        position: absolute;
-        bottom: 0;
-        width: 100%;
-        padding: 0.75rem;
-        background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0));
-        font-size: 1.1rem;
-        font-weight: bold;
-    }
+.input-row:focus-within{
+  border-color: color-mix(in srgb, var(--pink) 65%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--pink) 20%, transparent);
+}
+
+.input{
+  flex:1;
+  background:transparent;
+  color:rgba(255,105,180,0.5);
+  border:0;
+  outline:0;
+  height:44px;
+  padding:0 12px;
+  font-size:16px;
+  border-radius:999px;
+}
+
+.input::placeholder{
+  color:#f2cfe0;
+  opacity:.9;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(250px, 1fr));
+  gap:20px;
+  padding:20px;
+  max-width:1200px;
+  margin:0 auto 40px;
+}
+
+.game-card{
+  position:relative;
+  border-radius:var(--radius);
+  overflow:hidden;
+  background:var(--panel);
+  box-shadow: 0 6px 26px var(--pink-shadow);
+  cursor:pointer;
+  transition: transform .18s ease, box-shadow .18s ease;
+  aspect-ratio: 16 / 9;
+}
+
+.game-card:hover{
+  transform: translateY(-2px) scale(1.015);
+  box-shadow: 0 10px 34px var(--pink-shadow);
+}
+
+.game-card img{
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:cover;
+}
+
+.game-title{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  padding:12px 14px;
+  font-weight:700;
+  letter-spacing:.2px;
+  color:#fff;
+  background: linear-gradient(to top, rgba(0,0,0,.85), rgba(0,0,0,0));
+  backdrop-filter:saturate(120%);
+  text-shadow: 0 1px 2px rgba(0,0,0,.6);
+  font-size:1.05rem;
+}
+
+.container{
+  max-width:1200px;
+  margin:0 auto;
+  padding:0 12px;
+}
 </style>
 </head>
 <body>
 
 <div class="search-bar">
-    <input type="text" id="searchInput" placeholder="Search Games Here...">
+  <div class="container">
+    <div class="input-row">
+      <input class="input" id="searchInput" type="text" placeholder="Search Games Here..."/>
+    </div>
+  </div>
 </div>
 
 <div class="grid" id="gameGrid"></div>
 
 <script>
 const games = [
-    {
-        title: "1v1.Lol",
-        file: "cl1v1lol.html",
-        thumbnail: "assets/thumbnails/1v1lol.png"
-    },
-    // Add more games here by copy-pasting this object format
+  {
+    title: "1v1.Lol",
+    file: "cl1v1lol.html",
+    thumbnail: "assets/thumbnails/1v1lol.png"
+  }
 ];
 
 function renderGames(filter = "") {
-    const grid = document.getElementById("gameGrid");
-    grid.innerHTML = "";
-    games
-        .filter(game => game.title.toLowerCase().includes(filter.toLowerCase()))
-        .forEach(game => {
-            const card = document.createElement("div");
-            card.className = "game-card";
-            card.onclick = () => {
-                window.location.href = `gameloader.html?game=${encodeURIComponent(game.file)}`;
-            };
-            card.innerHTML = `
-                <img src="${game.thumbnail}" alt="${game.title}">
-                <div class="game-title">${game.title}</div>
-            `;
-            grid.appendChild(card);
-        });
+  const grid = document.getElementById("gameGrid");
+  grid.innerHTML = "";
+  games
+    .filter(game => game.title.toLowerCase().includes(filter.toLowerCase()))
+    .forEach(game => {
+      const card = document.createElement("div");
+      card.className = "game-card";
+      card.onclick = () => {
+        window.location.href = `gameloader.html?game=${encodeURIComponent(game.file)}`;
+      };
+      const img = document.createElement("img");
+      img.src = game.thumbnail;
+      img.alt = game.title;
+      const title = document.createElement("div");
+      title.className = "game-title";
+      title.textContent = game.title;
+      card.appendChild(img);
+      card.appendChild(title);
+      grid.appendChild(card);
+    });
 }
 
 document.getElementById("searchInput").addEventListener("input", e => {
-    renderGames(e.target.value);
+  renderGames(e.target.value);
 });
 
 renderGames();
