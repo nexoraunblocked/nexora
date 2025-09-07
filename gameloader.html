@@ -8,8 +8,11 @@
 </head>
 <body>
 
-  <div class="container loader-page">
-    <!-- Main Loader Column -->
+  <!--
+    Top and side padding leave room for AdSense.
+    Main loader centered and fills available space.
+  -->
+  <div class="loader-page">
     <div class="loader-wrapper">
       <div id="gameContainer"></div>
       <footer class="loader-footer">
@@ -17,33 +20,22 @@
           <img src="assets/nexora-logo.png" alt="Nexora Logo" />
           <span>Nexora</span>
         </div>
-        <button id="fullscreenBtn" class="fullscreen-btn">Full Screen</button>
+        <button id="fullscreenBtn" class="fullscreen-btn">
+          Full Screen
+        </button>
       </footer>
     </div>
-
-    <!-- Recommended Sidebar -->
-    <aside class="recommended">
-      <h3>Recommended</h3>
-      <div class="recommend-grid" id="recommendGrid"></div>
-    </aside>
   </div>
 
   <script>
-    // retrieve from sessionStorage
     const allGames    = JSON.parse(sessionStorage.getItem("gamesList")    || "[]");
     const currentGame = JSON.parse(sessionStorage.getItem("currentGame") || "null");
-
-    // if you land here directly, go back
-    if (!currentGame) {
-      location.href = "game.html";
-    }
+    if (!currentGame) location.href = "game.html";
 
     const container = document.getElementById("gameContainer");
-    const recGrid   = document.getElementById("recommendGrid");
     const fsBtn     = document.getElementById("fullscreenBtn");
 
-    // show start screen with thumbnail, title, Play Now button
-    function showStartScreen() {
+    function showStart() {
       container.innerHTML = `
         <div class="loader-start">
           <img src="${currentGame.thumbnail}" alt="${currentGame.title}" />
@@ -62,38 +54,13 @@
       };
     }
 
-    // pick up to 4 random other games
-    function renderRecommended() {
-      const others = allGames
-        .filter(g => g.file !== currentGame.file)
-        .sort(() => 0.5 - Math.random())
-        .slice(0, 4);
-
-      recGrid.innerHTML = "";
-      others.forEach(g => {
-        const card = document.createElement("div");
-        card.className = "rec-card";
-        card.onclick = () => {
-          sessionStorage.setItem("currentGame", JSON.stringify(g));
-          location.reload();
-        };
-        card.innerHTML = `
-          <img src="${g.thumbnail}" alt="${g.title}" />
-          <div class="rec-title">${g.title}</div>
-        `;
-        recGrid.appendChild(card);
-      });
-    }
-
-    // full-screen toggle
     fsBtn.onclick = () => {
       const el = container.querySelector(".game-iframe") || container;
       if (el.requestFullscreen) el.requestFullscreen();
       else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
     };
 
-    showStartScreen();
-    renderRecommended();
+    showStart();
   </script>
 </body>
 </html>
