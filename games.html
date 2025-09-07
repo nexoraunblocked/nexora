@@ -24,15 +24,9 @@
   <div class="grid" id="gameGrid"></div>
 
   <script>
-  (function(){
-    const games = [
-      {
-        title: "1v1.Lol",
-        file: "cl1v1lol.html",
-        thumbnail: "assets/thumbnails/1v1lol.png"
-      }
-    ];
-
+  (async function(){
+    const resp  = await fetch('games/game-info.json');
+    const games = await resp.json();
     sessionStorage.setItem("gamesList", JSON.stringify(games));
 
     function initGames(filter = "") {
@@ -47,11 +41,11 @@
             sessionStorage.setItem("currentGame", JSON.stringify(game));
             navigate('/loader');
           };
-          const img = document.createElement("img");
-          img.src = game.thumbnail;
-          img.alt = game.title;
+          const img   = document.createElement("img");
+          img.src     = game.thumbnail;
+          img.alt     = game.title;
           const title = document.createElement("div");
-          title.className = "game-title";
+          title.className   = "game-title";
           title.textContent = game.title;
           card.appendChild(img);
           card.appendChild(title);
@@ -59,6 +53,7 @@
         });
     }
 
+    // 4) wire up search
     document
       .getElementById("searchInput")
       .addEventListener("input", e => initGames(e.target.value));
