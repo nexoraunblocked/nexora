@@ -6,7 +6,7 @@
   },
   {
     "title": "2048",
-    "file": "games/cl2024.html",
+    "file": "games/cl2048.html",
     "thumbnail": "assets/thumbnails/2048.png"
   },
   {
@@ -38,5 +38,40 @@
     "title": "Baldi's Basics",
     "file": "games/clbaldisbasics.html",
     "thumbnail": "assets/thumbnails/baldisbasics.jpg"
+  },
+  {
+    "title": "Bank Robbery 2",
+    "file": "games/clbankrobbery2.html",
+    "thumbnail": "assets/thumbnails/bankrobbery2.jpg"
+  },
+  {
+    "title": "Basket Random",
+    "file": "games/clbasketrandom.html",
+    "thumbnail": "assets/thumbnails/basketrandom.png"
+  },
+  {
+    "title": "Battle Simulator",
+    "file": "games/clbattlesim.html",
+    "thumbnail": "assets/thumbnails/battlesim.jpg"
+  },
+  {
+    "title": "Bitlife",
+    "file": "games/clbitlife.html",
+    "thumbnail": "assets/thumbnails/bitlife.png"
+  },
+  {
+    "title": "Bloons TD5",
+    "file": "games/clbloonsTD5.html",
+    "thumbnail": "assets/thumbnails/bloonstd5.jpg"
+  },
+  {
+    "title": "Bob the Robber 5",
+    "file": "games/clbobtherobber5.html",
+    "thumbnail": "assets/thumbnails/bobtherobber5.png"
+  },
+  {
+    "title": "Bottle Jump 3D",
+    "file": "games/clbottlejump3d.html",
+    "thumbnail": "assets/thumbnails/bottlejump3d.jpg"
   }
 ]
