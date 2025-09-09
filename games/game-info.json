@@ -83,5 +83,115 @@
     "title": "Chess",
     "file": "games/clchess.html",
     "thumbnail": "assets/thumbnails/chess.png"
+  },
+  {
+    "title": "Chuster Rush",
+    "file": "games/clclusterrush.html",
+    "thumbnail": "assets/thumbnails/cluster-rush.jpg"
+  },
+  {
+    "title": "Call of Duty 4",
+    "file": "games/clchess.html",
+    "thumbnail": "assets/thumbnails/cod4.png"
+  },
+  {
+    "title": "Cookie Clicker",
+    "file": "games/clcookieclickercool.html",
+    "thumbnail": "assets/thumbnails/cookieclicker.png"
+  },
+  {
+    "title": "Cooking Mama 3",
+    "file": "games/clchess.html",
+    "thumbnail": "assets/thumbnails/cookingmama.png"
+  },
+  {
+    "title": "Coreball",
+    "file": "games/clcoreball.html",
+    "thumbnail": "assets/thumbnails/coreball.png"
+  },
+  {
+    "title": "Crazy Cattle 3D",
+    "file": "games/clcrazycattle3d.html",
+    "thumbnail": "assets/thumbnails/crazycattle.png"
+  },
+  {
+    "title": "Crazy Chicken 3D",
+    "file": "games/crazychicken3D.html",
+    "thumbnail": "assets/thumbnails/crazychicken.png"
+  },
+  {
+    "title": "Crossy Road",
+    "file": "games/clcrossyroad.html",
+    "thumbnail": "assets/thumbnails/crossyroad.png"
+  },
+  {
+    "title": "Counterstrike 1.6",
+    "file": "games/clcs1.6.html",
+    "thumbnail": "assets/thumbnails/counterstrike.png"
+  },
+  {
+    "title": "Curve Ball",
+    "file": "games/clcurveball.html",
+    "thumbnail": "assets/thumbnails/curveball.png"
+  },
+  {
+    "title": "Dig to China",
+    "file": "games/cldigtochina.html",
+    "thumbnail": "assets/thumbnails/digtochina.jpg"
+  },
+  {
+    "title": "Doge Miner",
+    "file": "games/cldogeminer.html",
+    "thumbnail": "assets/thumbnails/dogeminer.png"
+  },
+  {
+    "title": "Doomz.io",
+    "file": "games/cldoomzio.html",
+    "thumbnail": "assets/thumbnails/doomzio.png"
+  },
+  {
+    "title": "Draw Climber",
+    "file": "games/cldrawclimber.html",
+    "thumbnail": "assets/thumbnails/drawclimber.jpg"
+  },
+  {
+    "title": "Drift Boss",
+    "file": "games/cldriftboss.html",
+    "thumbnail": "assets/thumbnails/driftboss.png"
+  },
+  {
+    "title": "Drive Mad",
+    "file": "games/cldrivemad.html",
+    "thumbnail": "assets/thumbnails/drivemad.jpg"
+  },
+  {
+    "title": "Escape Road 2",
+    "file": "games/clescaperoad2.html",
+    "thumbnail": "assets/thumbnails/escaperoad.png"
+  },
+  {
+    "title": "Feed Us 5",
+    "file": "games/feedus5.html",
+    "thumbnail": "assets/thumbnails/feedus.png"
+  },
+  {
+    "title": "FIFA International",
+    "file": "games/clFIFAinternationalsoccer.html",
+    "thumbnail": "assets/thumbnails/fifainternational.png"
+  },
+  {
+    "title": "Flood Runner 4",
+    "file": "games/clfloodrunner4.html",
+    "thumbnail": "assets/thumbnails/floodrunner.png"
+  },
+  {
+    "title": "Fluidism",
+    "file": "games/clfluidism.html",
+    "thumbnail": "assets/thumbnails/fluidism.png"
+  },
+  {
+    "title": "Five Nights at Freddy's",
+    "file": "games/clfnaf.html",
+    "thumbnail": "assets/thumbnails/fnaf.jpg"
   }
 ]
