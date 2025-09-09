@@ -159,9 +159,12 @@ body {
 }
 
 .loader-start img {
-  width: 474px;
-  height: 474px;
-  object-fit: cover;
+  width: 474px !important;
+  height: 474px !important;
+  flex: 0 0 auto;       
+  max-width: none;      
+  display: block;         
+  object-fit: cover;      
   border-radius: var(--radius);
   box-shadow: 0 6px 24px var(--pink-shadow);
 }
