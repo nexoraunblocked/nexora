@@ -23,14 +23,17 @@
   </div>
 
   <script>
-    const allGames    = JSON.parse(sessionStorage.getItem("gamesList")    || "[]");
-    const currentGame = JSON.parse(sessionStorage.getItem("currentGame") || "null");
-    if (!currentGame) location.href = "game.html";
+    function initLoader() {
+      const allGames    = JSON.parse(sessionStorage.getItem("gamesList")    || "[]");
+      const currentGame = JSON.parse(sessionStorage.getItem("currentGame") || "null");
+      if (!currentGame) {
+        location.href = "game.html";
+        return;
+      }
 
-    const container = document.getElementById("gameContainer");
-    const fsBtn     = document.getElementById("fullscreenBtn");
+      const container = document.getElementById("gameContainer");
+      const fsBtn     = document.getElementById("fullscreenBtn");
 
-    function showStart() {
       container.innerHTML = `
         <div class="loader-start">
           <img src="${currentGame.thumbnail}" alt="${currentGame.title}" />
@@ -38,6 +41,7 @@
           <button id="playBtn" class="play-btn">Play Now</button>
         </div>
       `;
+
       document.getElementById("playBtn").onclick = () => {
         const iframe = document.createElement("iframe");
         iframe.src = currentGame.file;
@@ -47,15 +51,16 @@
         container.innerHTML = "";
         container.appendChild(iframe);
       };
+
+      fsBtn.onclick = () => {
+        const el = container.querySelector(".game-iframe") || container;
+        if (el.requestFullscreen) el.requestFullscreen();
+        else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+      };
     }
 
-    fsBtn.onclick = () => {
-      const el = container.querySelector(".game-iframe") || container;
-      if (el.requestFullscreen) el.requestFullscreen();
-      else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
-    };
+    initLoader();
 
-    showStart();
   </script>
 </body>
 </html>
