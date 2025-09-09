@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Game Selector (AI-Powered Search)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Game Selector</title>
   <link rel="stylesheet" href="css/games.css" />
 </head>
 <body>
@@ -29,84 +29,35 @@
     const games = await resp.json();
     sessionStorage.setItem("gamesList", JSON.stringify(games));
 
-    async function generateKeywords(query) {
-      const payload = {
-        model: 'gpt-3.5-turbo',
-        messages: [
-          {
-            role: 'system',
-            content: 'You are a helpful assistant that, given a short search phrase, returns a JSON array of up to 5 related keywords or synonyms.'
-          },
-          {
-            role: 'user',
-            content: `Generate up to 5 single-word or short-phrase keywords related to: "${query}". Respond with only a JSON array.`
-          }
-        ]
-      };
-
-      const res = await fetch('https://nexora-learning-logs55.fly.dev/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload)
-      });
-      const { choices } = await res.json();
-      try {
-        return JSON.parse(choices[0].message.content);
-      } catch {
-        return [ query ];
-      }
-    }
-
-    let debounceTimer = null;
-    document.getElementById('searchInput').addEventListener('input', e => {
-      clearTimeout(debounceTimer);
-      const q = e.target.value.trim();
-      debounceTimer = setTimeout(() => initGames(q), 300);
-    });
-
-    async function initGames(filter = '') {
+    function initGames(filter = "") {
       const grid = document.getElementById("gameGrid");
       grid.innerHTML = "";
-
-      let results = games;
-      if (filter) {
-        const keywords = await generateKeywords(filter);
-        const lowered = title => title.toLowerCase();
-
-        results = games.filter(({ title }) =>
-          keywords.some(kw => lowered(title).includes(kw.toLowerCase()))
-        );
-      }
-
-      results.forEach(game => {
-        const card = document.createElement("div");
-        card.className = "game-card";
-        card.onclick = () => {
-          sessionStorage.setItem("currentGame", JSON.stringify(game));
-          navigate('/loader');
-        };
-
-        const img = document.createElement("img");
-        img.src = game.thumbnail;
-        img.alt = game.title;
-
-        const title = document.createElement("div");
-        title.className = "game-title";
-        title.textContent = game.title;
-
-        card.appendChild(img);
-        card.appendChild(title);
-        grid.appendChild(card);
-      });
+      games
+        .filter(g => g.title.toLowerCase().includes(filter.toLowerCase()))
+        .forEach(game => {
+          const card = document.createElement("div");
+          card.className = "game-card";
+          card.onclick = () => {
+            sessionStorage.setItem("currentGame", JSON.stringify(game));
+            navigate('/loader');
+          };
+          const img   = document.createElement("img");
+          img.src     = game.thumbnail;
+          img.alt     = game.title;
+          const title = document.createElement("div");
+          title.className   = "game-title";
+          title.textContent = game.title;
+          card.appendChild(img);
+          card.appendChild(title);
+          grid.appendChild(card);
+        });
     }
+
+    document
+      .getElementById("searchInput")
+      .addEventListener("input", e => initGames(e.target.value));
 
     initGames();
-
-    function navigate(path) {
-      console.log('Navigate to', path);
-    }
   })();
   </script>
 
