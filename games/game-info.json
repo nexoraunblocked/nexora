@@ -73,5 +73,15 @@
     "title": "Bottle Jump 3D",
     "file": "games/clbottlejump3d.html",
     "thumbnail": "assets/thumbnails/bottlejump3d.jpg"
+  },
+  {
+    "title": "Checkers",
+    "file": "games/clcheckers.html",
+    "thumbnail": "assets/thumbnails/checkers.png"
+  },
+  {
+    "title": "Chess",
+    "file": "games/clchess.html",
+    "thumbnail": "assets/thumbnails/chess.png"
   }
 ]

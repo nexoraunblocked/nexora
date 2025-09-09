@@ -159,11 +159,13 @@ body {
 }
 
 .loader-start img {
-  width: 90%;
-  max-width: 800px;
+  width: 474px;
+  height: 474px;
+  object-fit: cover;
   border-radius: var(--radius);
   box-shadow: 0 6px 24px var(--pink-shadow);
 }
+
 
 .loader-start .game-title {
   color: #fff;
