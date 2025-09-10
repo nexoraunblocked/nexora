@@ -75,6 +75,11 @@
     "thumbnail": "assets/thumbnails/bottlejump3d.jpg"
   },
   {
+    "title": "Call of Duty 4",
+    "file": "games/clchess.html",
+    "thumbnail": "assets/thumbnails/cod4.png"
+  },
+  {
     "title": "Checkers",
     "file": "games/clcheckers.html",
     "thumbnail": "assets/thumbnails/checkers.png"
@@ -88,11 +93,6 @@
     "title": "Chuster Rush",
     "file": "games/clclusterrush.html",
     "thumbnail": "assets/thumbnails/cluster-rush.jpg"
-  },
-  {
-    "title": "Call of Duty 4",
-    "file": "games/clchess.html",
-    "thumbnail": "assets/thumbnails/cod4.png"
   },
   {
     "title": "Cookie Clicker",
@@ -150,6 +150,11 @@
     "thumbnail": "assets/thumbnails/doomzio.png"
   },
   {
+    "title": "Draft Wars 2",
+    "file": "games/cldraftwars2.html",
+    "thumbnail": "assets/thumbnails/draftwars.webp"
+  },
+  {
     "title": "Draw Climber",
     "file": "games/cldrawclimber.html",
     "thumbnail": "assets/thumbnails/drawclimber.jpg"
@@ -165,6 +170,11 @@
     "thumbnail": "assets/thumbnails/drivemad.jpg"
   },
   {
+    "title": "Eaglercraft 1.12.2",
+    "file": "games/clEaglercraft1.12.html",
+    "thumbnail": "assets/thumbnails/eaglercraft.webp"
+  },
+  {
     "title": "Escape Road 2",
     "file": "games/clescaperoad2.html",
     "thumbnail": "assets/thumbnails/escaperoad.png"
@@ -178,16 +188,6 @@
     "title": "FIFA International",
     "file": "games/clFIFAinternationalsoccer.html",
     "thumbnail": "assets/thumbnails/fifainternational.png"
-  },
-  {
-    "title": "Flood Runner 4",
-    "file": "games/clfloodrunner4.html",
-    "thumbnail": "assets/thumbnails/floodrunner.png"
-  },
-  {
-    "title": "Fluidism",
-    "file": "games/clfluidism.html",
-    "thumbnail": "assets/thumbnails/fluidism.png"
   },
   {
     "title": "Five Nights at Freddy's",
@@ -215,6 +215,16 @@
     "thumbnail": "assets/thumbnails/fnf.jpg"
   },
   {
+    "title": "Flood Runner 4",
+    "file": "games/clfloodrunner4.html",
+    "thumbnail": "assets/thumbnails/floodrunner.png"
+  },
+  {
+    "title": "Fluidism",
+    "file": "games/clfluidism.html",
+    "thumbnail": "assets/thumbnails/fluidism.png"
+  },
+  {
     "title": "Geometry Dash",
     "file": "games/clgeometrydashscratch.html",
     "thumbnail": "assets/thumbnails/geometrydash.webp"
@@ -225,6 +235,11 @@
     "thumbnail": "assets/thumbnails/getawayshootout.webp"
   },
   {
+    "title": "Grand Theft Auto: 2",
+    "file": "games/clgta22.html",
+    "thumbnail": "assets/thumbnails/gta2.webp"
+  },
+  {
     "title": "Grand Theft Auto: Advance",
     "file": "games/clgrandtheftautoadvance.html",
     "thumbnail": "assets/thumbnails/gtaadv.webp"
@@ -233,11 +248,6 @@
     "title": "Granny 2",
     "file": "games/clgranny22.html",
     "thumbnail": "assets/thumbnails/granny.jpg"
-  },
-  {
-    "title": "Grand Theft Auto: 2",
-    "file": "games/clgta22.html",
-    "thumbnail": "assets/thumbnails/gta2.webp"
   },
   {
     "title": "Half Life",
@@ -373,11 +383,6 @@
     "title": "Push Your Luck",
     "file": "games/clpushyourluck.html",
     "thumbnail": "assets/thumbnails/pushyourluck.webp"
-  },
-  {
-    "title": "Draft Wars 2",
-    "file": "games/cldraftwars2.html",
-    "thumbnail": "assets/thumbnails/draftwars.webp"
   },
   {
     "title": "Ragdoll.io",
@@ -643,10 +648,5 @@
     "title": "We Become What We Behold",
     "file": "games/clwebecomewhatwebehold.html",
     "thumbnail": "assets/thumbnails/wbwwb.webp"
-  },
-  {
-    "title": "Eaglercraft 1.12.2",
-    "file": "games/clEaglercraft1.12.html",
-    "thumbnail": "assets/thumbnails/eaglercraft.webp"
   }
 ]
