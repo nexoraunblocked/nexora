@@ -90,7 +90,7 @@
     "thumbnail": "assets/thumbnails/chess.png"
   },
   {
-    "title": "Chuster Rush",
+    "title": "Cluster Rush",
     "file": "games/clclusterrush.html",
     "thumbnail": "assets/thumbnails/cluster-rush.jpg"
   },
@@ -150,14 +150,14 @@
     "thumbnail": "assets/thumbnails/doomzio.png"
   },
   {
-    "title": "Draft Wars 2",
-    "file": "games/cldraftwars2.html",
-    "thumbnail": "assets/thumbnails/draftwars.webp"
+    "title": "Raft Wars 2",
+    "file": "games/clraftwars2.html",
+    "thumbnail": "assets/thumbnails/draftwars.jpg"
   },
   {
     "title": "Draw Climber",
     "file": "games/cldrawclimber.html",
-    "thumbnail": "assets/thumbnails/drawclimber.jpg"
+    "thumbnail": "assets/thumbnails/drawclimber.webp"
   },
   {
     "title": "Drift Boss",
@@ -257,7 +257,7 @@
   {
     "title": "Happy Wheels",
     "file": "games/clhappywheels.html",
-    "thumbnail": "assets/thumbnails/happywheels.webp"
+    "thumbnail": "assets/thumbnails/happywheels.jpg"
   },
   {
     "title": "Harvest.io",
@@ -277,7 +277,7 @@
   {
     "title": "Hide n' Seek",
     "file": "games/clhidenseek.html",
-    "thumbnail": "assets/thumbnails/hidenseek.webp"
+    "thumbnail": "assets/thumbnails/hidenseek.png"
   },
   {
     "title": "Hole.io",
@@ -292,12 +292,12 @@
   {
     "title": "Islander",
     "file": "games/clislander.html",
-    "thumbnail": "assets/thumbnails/islander.webp"
+    "thumbnail": "assets/thumbnails/islander.jpg"
   },
   {
-    "title": "Just Fall",
+    "title": "Just Fall Lol",
     "file": "games/cljustfalllol.html",
-    "thumbnail": "assets/thumbnails/justfall.webp"
+    "thumbnail": "assets/thumbnails/justfalllol.webp"
   },
   {
     "title": "Learn to Fly 3",
@@ -307,17 +307,12 @@
   {
     "title": "Lode Runner",
     "file": "games/clloderunner.html",
-    "thumbnail": "assets/thumbnails/loderunner.webp"
+    "thumbnail": "assets/thumbnails/loderunner.avif"
   },
   {
     "title": "Madden 98",
     "file": "games/clmadden98.html",
-    "thumbnail": "assets/thumbnails/madden98.webp"
-  },
-  {
-    "title": "Mario 3",
-    "file": "games/clmario3.html",
-    "thumbnail": "assets/thumbnails/mario.webp"
+    "thumbnail": "assets/thumbnails/madden98.png"
   },
   {
     "title": "Megaman 7",
@@ -327,7 +322,7 @@
   {
     "title": "Melon Playground",
     "file": "games/clmelonplayground.html",
-    "thumbnail": "assets/thumbnails/melonplayground.webp"
+    "thumbnail": "assets/thumbnails/melonplayground.jpg"
   },
   {
     "title": "Mighty Knight 2",
@@ -347,27 +342,27 @@
   {
     "title": "Not Your Pawn",
     "file": "games/clnotyourpawn.html",
-    "thumbnail": "assets/thumbnails/notyourpawn.webp"
+    "thumbnail": "assets/thumbnails/notyourpawn.png"
   },
   {
     "title": "Only Up",
     "file": "games/clonlyup.html",
-    "thumbnail": "assets/thumbnails/onlyup.webp"
+    "thumbnail": "assets/thumbnails/onlyup.jpg"
   },
   {
     "title": "OSU",
     "file": "games/closu.html",
-    "thumbnail": "assets/thumbnails/osu.webp"
+    "thumbnail": "assets/thumbnails/osu.jpg"
   },
   {
     "title": "Pac-Man",
     "file": "games/clpacman.html",
-    "thumbnail": "assets/thumbnails/pacman.webp"
+    "thumbnail": "assets/thumbnails/pacman.jpg"
   },
   {
     "title": "Paper.io 3D",
     "file": "games/clpaperio3d.html",
-    "thumbnail": "assets/thumbnails/paperio.webp"
+    "thumbnail": "assets/thumbnails/paperio.png"
   },
   {
     "title": "Parking Rush",
@@ -382,12 +377,12 @@
   {
     "title": "Push Your Luck",
     "file": "games/clpushyourluck.html",
-    "thumbnail": "assets/thumbnails/pushyourluck.webp"
+    "thumbnail": "assets/thumbnails/pushyourluck.png"
   },
   {
     "title": "Ragdoll.io",
     "file": "games/clragdollio.html",
-    "thumbnail": "assets/thumbnails/ragdollio.webp"
+    "thumbnail": "assets/thumbnails/ragdollio.png"
   },
   {
     "title": "Retro Bowl",
@@ -397,7 +392,7 @@
   {
     "title": "Retro Ping Pong",
     "file": "games/clretropingpong.html",
-    "thumbnail": "assets/thumbnails/retropingpong.webp"
+    "thumbnail": "assets/thumbnails/retropingpong.jpg"
   },
   {
     "title": "Rocket League",
@@ -422,7 +417,7 @@
   {
     "title": "Sandboxels",
     "file": "games/clsandboxels.html",
-    "thumbnail": "assets/thumbnails/sandboxels.webp"
+    "thumbnail": "assets/thumbnails/sandboxels.jpg"
   },
   {
     "title": "Sandtris",
