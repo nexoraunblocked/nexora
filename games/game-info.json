@@ -191,7 +191,462 @@
   },
   {
     "title": "Five Nights at Freddy's",
-    "file": "games/clfnaf.html",
+    "file": "games/clFNAF.html",
     "thumbnail": "assets/thumbnails/fnaf.jpg"
-  }
+  },
+  {
+    "title": "Five Nights at Freddy's 2",
+    "file": "games/clFNAF2.html",
+    "thumbnail": "assets/thumbnails/fnaf2.webp"
+  },
+  {
+    "title": "Five Nights at Freddy's 3",
+    "file": "games/clFNAF3.html",
+    "thumbnail": "assets/thumbnails/fnaf3.webp"
+  },
+  {
+    "title": "Five Nights at Freddy's 4",
+    "file": "games/clFNAF4.html",
+    "thumbnail": "assets/thumbnails/fnaf4.png"
+  },
+  {
+    "title": "Friday Night Funkin'",
+    "file": "games/clfridaynightfunkin.html",
+    "thumbnail": "assets/thumbnails/fnf.jpg"
+  },
+  {
+    "title": "Geometry Dash",
+    "file": "games/clgeometrydashscratch.html",
+    "thumbnail": "assets/thumbnails/geometrydash.webp"
+  },
+  {
+    "title": "Getaway Shootout",
+    "file": "games/clgetawayshootout.html",
+    "thumbnail": "assets/thumbnails/getawayshootout.webp"
+  },
+  {
+    "title": "Grand Theft Auto: Advance",
+    "file": "games/clgrandtheftautoadvance.html",
+    "thumbnail": "assets/thumbnails/gtaadv.webp"
+  },
+  {
+    "title": "Granny 2",
+    "file": "games/clgranny22.html",
+    "thumbnail": "assets/thumbnails/granny.jpg"
+  },
+  {
+    "title": "Grand Theft Auto: 2",
+    "file": "games/clgta22.html",
+    "thumbnail": "assets/thumbnails/gta2.webp"
+  },
+  {
+    "title": "Half Life",
+    "file": "games/clhalflife.html",
+    "thumbnail": "assets/thumbnails/halflife.avif"
+  },
+  {
+    "title": "Happy Wheels",
+    "file": "games/clhappywheels.html",
+    "thumbnail": "assets/thumbnails/happywheels.webp"
+  },
+  {
+    "title": "Harvest.io",
+    "file": "games/clharvestio.html",
+    "thumbnail": "assets/thumbnails/harvestio.webp"
+  },
+  {
+    "title": "Heist",
+    "file": "games/clhei$t.html",
+    "thumbnail": "assets/thumbnails/heist.webp"
+  },
+  {
+    "title": "Helix Jump",
+    "file": "games/clhelixjump.html",
+    "thumbnail": "assets/thumbnails/heilxjump.webp"
+  },
+  {
+    "title": "Hide n' Seek",
+    "file": "games/clhidenseek.html",
+    "thumbnail": "assets/thumbnails/hidenseek.webp"
+  },
+  {
+    "title": "Hole.io",
+    "file": "games/clholeio.html",
+    "thumbnail": "assets/thumbnails/holeio.webp"
+  },
+  {
+    "title": "Idle Miner Tycoon",
+    "file": "games/clidleminertycoon.html",
+    "thumbnail": "assets/thumbnails/idleminertycoon.webp"
+  },
+  {
+    "title": "Islander",
+    "file": "games/clislander.html",
+    "thumbnail": "assets/thumbnails/islander.webp"
+  },
+  {
+    "title": "Just Fall",
+    "file": "games/cljustfalllol.html",
+    "thumbnail": "assets/thumbnails/justfall.webp"
+  },
+  {
+    "title": "Learn to Fly 3",
+    "file": "games/cllearntofly3.html",
+    "thumbnail": "assets/thumbnails/learntofly.webp"
+  },
+  {
+    "title": "Lode Runner",
+    "file": "games/clloderunner.html",
+    "thumbnail": "assets/thumbnails/loderunner.webp"
+  },
+  {
+    "title": "Madden 98",
+    "file": "games/clmadden98.html",
+    "thumbnail": "assets/thumbnails/madden98.webp"
+  },
+  {
+    "title": "Mario 3",
+    "file": "games/clmario3.html",
+    "thumbnail": "assets/thumbnails/mario.webp"
+  },
+  {
+    "title": "Megaman 7",
+    "file": "games/clmegaman7.html",
+    "thumbnail": "assets/thumbnails/megaman.webp"
+  },
+  {
+    "title": "Melon Playground",
+    "file": "games/clmelonplayground.html",
+    "thumbnail": "assets/thumbnails/melonplayground.webp"
+  },
+  {
+    "title": "Mighty Knight 2",
+    "file": "games/clmightyknight2.html",
+    "thumbnail": "assets/thumbnails/mightyknight.webp"
+  },
+  {
+    "title": "Mortal Kombat 2",
+    "file": "games/clmortalkombat2.html",
+    "thumbnail": "assets/thumbnails/mortalkombat2.webp"
+  },
+  {
+    "title": "Mountain Bike Racer",
+    "file": "games/clmountainbikeracer.html",
+    "thumbnail": "assets/thumbnails/mountainbikeracer.webp"
+  },
+  {
+    "title": "Not Your Pawn",
+    "file": "games/clnotyourpawn.html",
+    "thumbnail": "assets/thumbnails/notyourpawn.webp"
+  },
+  {
+    "title": "Only Up",
+    "file": "games/clonlyup.html",
+    "thumbnail": "assets/thumbnails/onlyup.webp"
+  },
+  {
+    "title": "OSU",
+    "file": "games/closu.html",
+    "thumbnail": "assets/thumbnails/osu.webp"
+  },
+  {
+    "title": "Pac-Man",
+    "file": "games/clpacman.html",
+    "thumbnail": "assets/thumbnails/pacman.webp"
+  },
+  {
+    "title": "Paper.io 3D",
+    "file": "games/clpaperio3d.html",
+    "thumbnail": "assets/thumbnails/paperio.webp"
+  },
+  {
+    "title": "Parking Rush",
+    "file": "games/clparkingrush.html",
+    "thumbnail": "assets/thumbnails/parkingrush.webp"
+  },
+  {
+    "title": "Poly Track",
+    "file": "games/clpolytrackworksnow.html",
+    "thumbnail": "assets/thumbnails/polytrack.webp"
+  },
+  {
+    "title": "Push Your Luck",
+    "file": "games/clpushyourluck.html",
+    "thumbnail": "assets/thumbnails/pushyourluck.webp"
+  },
+  {
+    "title": "Draft Wars 2",
+    "file": "games/cldraftwars2.html",
+    "thumbnail": "assets/thumbnails/draftwars.webp"
+  },
+  {
+    "title": "Ragdoll.io",
+    "file": "games/clragdollio.html",
+    "thumbnail": "assets/thumbnails/ragdollio.webp"
+  },
+  {
+    "title": "Retro Bowl",
+    "file": "games/clretrobowl.html",
+    "thumbnail": "assets/thumbnails/retrobowl.webp"
+  },
+  {
+    "title": "Retro Ping Pong",
+    "file": "games/clretropingpong.html",
+    "thumbnail": "assets/thumbnails/retropingpong.webp"
+  },
+  {
+    "title": "Rocket League",
+    "file": "games/clrocketleague.html",
+    "thumbnail": "assets/thumbnails/rocketleague.webp"
+  },
+  {
+    "title": "Rocket Soccer Derby",
+    "file": "games/clrocketsoccerderby.html",
+    "thumbnail": "assets/thumbnails/rocketsoccerderby.webp"
+  },
+  {
+    "title": "Rooftop Snipers",
+    "file": "games/clrooftopsnipers.html",
+    "thumbnail": "assets/thumbnails/rooftopsnipers.webp"
+  },
+  {
+    "title": "Run 3",
+    "file": "games/clrun3.html",
+    "thumbnail": "assets/thumbnails/run3.webp"
+  },
+  {
+    "title": "Sandboxels",
+    "file": "games/clsandboxels.html",
+    "thumbnail": "assets/thumbnails/sandboxels.webp"
+  },
+  {
+    "title": "Sandtris",
+    "file": "games/clsandtris.html",
+    "thumbnail": "assets/thumbnails/sandtris.webp"
+  },
+  {
+    "title": "Sentry Fortress",
+    "file": "games/clsentryfortress.html",
+    "thumbnail": "assets/thumbnails/sentryfortress.webp"
+  },
+  {
+    "title": "Shift 2",
+    "file": "games/clshift2.html",
+    "thumbnail": "assets/thumbnails/shfit2.webp"
+  },
+  {
+    "title": "Slipways",
+    "file": "games/clslipways.html",
+    "thumbnail": "assets/thumbnails/slipways.webp"
+  },
+  {
+    "title": "Slither.io",
+    "file": "games/clslitherio.html",
+    "thumbnail": "assets/thumbnails/slitherio.webp"
+  },
+  {
+    "title": "Slope",
+    "file": "games/clslope3.html",
+    "thumbnail": "assets/thumbnails/slope.webp"
+  },
+  {
+    "title": "Slow Roads",
+    "file": "games/clslowroads.html",
+    "thumbnail": "assets/thumbnails/slowroads.webp"
+  },
+  {
+    "title": "Sniper Shot",
+    "file": "games/clsnipershot.html",
+    "thumbnail": "assets/thumbnails/snipershot.webp"
+  },
+  {
+    "title": "Snow Rider",
+    "file": "games/clsnowrider.html",
+    "thumbnail": "assets/thumbnails/snowrider.webp"
+  },
+  {
+    "title": "Soccer Random",
+    "file": "games/clsoccerrandomgood.html",
+    "thumbnail": "assets/thumbnails/soccerrandom.webp"
+  },
+  {
+    "title": "Solar Smash",
+    "file": "games/clsolarsmash.html",
+    "thumbnail": "assets/thumbnails/solarsmash.webp"
+  },
+  {
+    "title": "Solitaire",
+    "file": "games/clsolitaire.html",
+    "thumbnail": "assets/thumbnails/solitaire.webp"
+  },
+  {
+    "title": "Sonic the Hedge Hog 3",
+    "file": "games/clsonicthehedgehog3.html",
+    "thumbnail": "assets/thumbnails/sonicthehedgehog.webp"
+  },
+  {
+    "title": "Sprunki",
+    "file": "games/clsprunki.html",
+    "thumbnail": "assets/thumbnails/sprunki.webp"
+  },
+  {
+    "title": "Stacktris",
+    "file": "games/clstacktris.html",
+    "thumbnail": "assets/thumbnails/stacktris.webp"
+  },
+  {
+    "title": "State.io",
+    "file": "games/clstateio.html",
+    "thumbnail": "assets/thumbnails/stateio.webp"
+  },
+  {
+    "title": "Stickman Hook",
+    "file": "games/clstickmanhook.html",
+    "thumbnail": "assets/thumbnails/stickmanhook.webp"
+  },
+  {
+    "title": "Stick War 2",
+    "file": "games/clstickwar2.html",
+    "thumbnail": "assets/thumbnails/stickwar2.webp"
+  },
+  {
+    "title": "Storm the House 3",
+    "file": "games/clstormthehouse3.html",
+    "thumbnail": "assets/thumbnails/stormthehouse3.webp"
+  },
+  {
+    "title": "Street Fighter 2",
+    "file": "games/clstreetfighter2.html",
+    "thumbnail": "assets/thumbnails/streetfighter2.webp"
+  },
+  {
+    "title": "Strike Force Heroes 3",
+    "file": "games/clstrikeforceheroes3.html",
+    "thumbnail": "assets/thumbnails/strikeforceheroes3.webp"
+  },
+  {
+    "title": "Subway Surfers : Barcelona",
+    "file": "games/clsubwaysurfersbarcelona.html",
+    "thumbnail": "assets/thumbnails/subwaysurfersbarcelona.webp"
+  },
+  {
+    "title": "Super Bomber Man 2",
+    "file": "games/clsuperbomberman2.html",
+    "thumbnail": "assets/thumbnails/superbomberman2.webp"
+  },
+  {
+    "title": "Super Mario Kart",
+    "file": "games/clsupermariokart.html",
+    "thumbnail": "assets/thumbnails/supermariokart.webp"
+  },
+  {
+    "title": "Survival Race 2",
+    "file": "games/clsurvivalracev2.html",
+    "thumbnail": "assets/thumbnails/survivalrace2.webp"
+  },
+  {
+    "title": "Table Tanks",
+    "file": "games/cltabletanks.html",
+    "thumbnail": "assets/thumbnails/tabletanks.webp"
+  },
+  {
+    "title": "Telephone Trouble",
+    "file": "games/cltelephonetrouble.html",
+    "thumbnail": "assets/thumbnails/telephonetrouble.webp"
+  },
+  {
+    "title": "Temple Run 2",
+    "file": "games/cltemplerun2.html",
+    "thumbnail": "assets/thumbnails/templerun2.webp"
+  },
+  {
+    "title": "Territorial.io",
+    "file": "games/clterritorialio.html",
+    "thumbnail": "assets/thumbnails/territorialio.webp"
+  },
+  {
+    "title": "Tetris",
+    "file": "games/cltetris.html",
+    "thumbnail": "assets/thumbnails/tetris.webp"
+  },
+  {
+    "title": "There is No Game",
+    "file": "games/clthereisnofile.html",
+    "thumbnail": "assets/thumbnails/thereisnogame.webp"
+  },
+  {
+    "title": "Times Shooter 3",
+    "file": "games/cltimeshooter3.html",
+    "thumbnail": "assets/thumbnails/timeshooter3.webp"
+  },
+  {
+    "title": "Tower Blocks",
+    "file": "games/cltowerblocks.html",
+    "thumbnail": "assets/thumbnails/towerblocks.webp"
+  },
+  {
+    "title": "Trace",
+    "file": "games/cltrace.html",
+    "thumbnail": "assets/thumbnails/trace.webp"
+  },
+  {
+    "title": "Truck Simulator",
+    "file": "games/cltrucksim.html",
+    "thumbnail": "assets/thumbnails/trucksim.webp"
+  },
+  {
+    "title": "Vex",
+    "file": "games/clvex.html",
+    "thumbnail": "assets/thumbnails/vex.webp"
+  },
+  {
+    "title": "Vex 2",
+    "file": "games/clvex2.html",
+    "thumbnail": "assets/thumbnails/vex2.webp"
+  },
+  {
+    "title": "Vex 3",
+    "file": "games/clvex3.html",
+    "thumbnail": "assets/thumbnails/vex3.webp"
+  },
+  {
+    "title": "Vex 4",
+    "file": "games/clvex4.html",
+    "thumbnail": "assets/thumbnails/vex4.webp"
+  },
+  {
+    "title": "Vex 5",
+    "file": "games/clvex5.html",
+    "thumbnail": "assets/thumbnails/vex5.webp"
+  },
+  {
+    "title": "Vex 6",
+    "file": "games/clvex6.html",
+    "thumbnail": "assets/thumbnails/vex6.webp"
+  },
+  {
+    "title": "Vex 7",
+    "file": "games/clvex7.html",
+    "thumbnail": "assets/thumbnails/vex7.webp"
+  },
+  {
+    "title": "Vex 8",
+    "file": "games/clvex8.html",
+    "thumbnail": "assets/thumbnails/vex8.webp"
+  },
+  {
+    "title": "Volley Random",
+    "file": "games/clvolleyrandom.html",
+    "thumbnail": "assets/thumbnails/vollyrandom.webp"
+  },
+  {
+    "title": "We Become What We Behold",
+    "file": "games/clwebecomewhatwebehold.html",
+    "thumbnail": "assets/thumbnails/wbwwb.webp"
+  },
+  {
+    "title": "Eaglercraft 1.12.2",
+    "file": "games/clEaglercraft1.12.html",
+    "thumbnail": "assets/thumbnails/eaglercraft.webp"
+  },
 ]
