@@ -3,27 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- immediate redirect to root -->
-  <script>
-    location.href = "/";
-  </script>
-
-  <title>Neumorphic Landing</title>
-
+  <title>Nexora Unblocked</title>
   <style>
     :root {
-      --page-bg: #000000;
-      --accent-color: #b3006b;
-      --shadow-light: rgba(255, 255, 255, 0.1);
-      --shadow-opacity: 0.2;
-      --pink-shadow: rgba(255, 105, 180, 0.5);
-    }
-
-    /* fade-in & slide-up */
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
+      --bg-start: #1a1a1a;
+      --bg-end:   #0d0d0d;
+      --pink:     #ff6ec7;
+      --pink-deep:#ff1fa4;
+      --light-shadow: rgba(255, 255, 255, 0.05);
+      --dark-shadow:  rgba(0, 0, 0, 0.2);
     }
 
     * {
@@ -34,92 +22,81 @@
 
     body {
       height: 100vh;
-      background: var(--page-bg);
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
+      background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
       font-family: "Segoe UI", sans-serif;
-      overflow: hidden;
+      color: white;
+      text-align: center;
+      padding: 20px;
     }
 
-    .container {
-      animation: fadeInUp 0.8s ease-out forwards;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
+    h1 {
+      font-size: clamp(2rem, 6vw, 3rem);
+      margin-bottom: 0.25em;
     }
 
-    .card {
-      background: var(--page-bg);
-      border-radius: 20px;
-      padding: 60px 80px;
-      box-shadow:
-        -10px -10px 20px var(--shadow-light),
-         10px  10px 20px rgba(0, 0, 0, var(--shadow-opacity));
-      transition: transform 0.4s ease, box-shadow 0.4s ease;
-    }
-
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow:
-        -12px -12px 24px var(--shadow-light),
-         12px  12px 24px rgba(0, 0, 0, var(--shadow-opacity));
+    h2 {
+      font-size: clamp(1rem, 3vw, 1.5rem);
+      font-weight: 400;
+      max-width: 600px;
+      margin-bottom: 2em;
+      line-height: 1.4;
     }
 
     .play-button {
-      background: var(--page-bg);
+      background: var(--bg-start);
+      color: var(--pink);
       border: none;
-      color: var(--accent-color);
-      font-size: 1.4rem;
-      padding: 18px 50px;
       border-radius: 50px;
+      padding: 18px 50px;
+      font-size: 1.4rem;
       cursor: pointer;
       box-shadow:
-        -6px -6px 18px var(--shadow-light),
-         6px  6px 18px rgba(0, 0, 0, var(--shadow-opacity));
-      transition: box-shadow 0.3s ease, transform 0.3s ease;
+        -6px -6px 18px var(--light-shadow),
+         6px  6px 18px var(--dark-shadow);
+      transition: color 0.3s ease,
+                  transform 0.3s ease,
+                  box-shadow 0.3s ease;
     }
 
     .play-button:hover {
+      color: var(--pink-deep);
       box-shadow:
-        -6px -6px 18px var(--pink-shadow),
-         6px  6px 18px rgba(0, 0, 0, var(--shadow-opacity));
+        -6px -6px 18px var(--pink),
+         6px  6px 18px var(--pink-deep);
       transform: translateY(-3px);
     }
 
-    /* neon glow on click */
-    .play-button.active {
-      box-shadow:
-        -6px -6px 24px var(--pink-shadow),
-         6px  6px 24px var(--pink-shadow);
-    }
-
-    /* keyboard-focus outline */
     .play-button:focus {
       outline: none;
       box-shadow:
-        0 0 0 3px var(--accent-color),
-        -6px -6px 18px var(--shadow-light),
-         6px  6px 18px rgba(0, 0, 0, var(--shadow-opacity));
+        0 0 0 3px var(--pink),
+        -6px -6px 18px var(--light-shadow),
+         6px  6px 18px var(--dark-shadow);
+    }
+
+    .play-button.active {
+      box-shadow:
+        -6px -6px 24px var(--pink),
+         6px  6px 24px var(--pink);
     }
   </style>
 </head>
-
 <body>
-  <div class="container">
-    <div class="card">
-      <button class="play-button" aria-label="Play Now">
-        Play Now
-      </button>
-    </div>
-  </div>
+  <h1>Nexora Unblocked</h1>
+  <h2>Nexora is a website offering many different tools and games in one place.</h2>
+  <button class="play-button" aria-label="Play Now">Play Now</button>
 
   <script>
-    // neon glow then navigates on click
-    document.querySelector(".play-button").addEventListener("click", function() {
-      this.classList.add("active");
-      setTimeout(() => location.href = "/", 200);
+    const btn = document.querySelector(".play-button");
+    btn.addEventListener("click", () => {
+      btn.classList.add("active");
+      setTimeout(() => {
+        location.href = "/";
+      }, 200);
     });
   </script>
 </body>
