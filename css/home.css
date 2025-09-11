@@ -1,0 +1,74 @@
+:root {
+  --page-bg: #000000;
+  --sidebar-bg: linear-gradient(to bottom, #2a0a2e, #1a001f);
+  --accent-color: #b3006b;
+  --shadow-light: rgba(255, 255, 255, 0.1);
+  --shadow-opacity: 0.2;
+  --pink-shadow: rgba(255, 105, 180, 0.5);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  height: 100vh;
+  background: var(--page-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+.sidebar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 80px;
+  height: 100%;
+  background: var(--sidebar-bg);
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.container {
+  margin-left: 80px;
+  width: calc(100% - 80px);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card {
+  background: var(--page-bg);
+  border-radius: 20px;
+  padding: 50px;
+  box-shadow:
+    -10px -10px 20px var(--shadow-light),
+     10px  10px 20px rgba(0, 0, 0, var(--shadow-opacity));
+}
+
+.play-button {
+  background: var(--page-bg);
+  border: none;
+  color: var(--accent-color);
+  font-size: 1.2rem;
+  padding: 20px 40px;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow:
+    -5px -5px 15px var(--shadow-light),
+     5px  5px 15px rgba(0, 0, 0, var(--shadow-opacity));
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.play-button:hover {
+  box-shadow:
+    -5px -5px 15px var(--pink-shadow),
+     5px  5px 15px rgba(0, 0, 0, var(--shadow-opacity));
+  transform: translateY(-2px);
+}
