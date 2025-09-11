@@ -2,19 +2,125 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <script>
-      location.href = "/";
-    </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- immediate redirect to root -->
+  <script>
+    location.href = "/";
+  </script>
+
   <title>Neumorphic Landing</title>
-  <link rel="stylesheet" href="home.css" />
+
+  <style>
+    :root {
+      --page-bg: #000000;
+      --accent-color: #b3006b;
+      --shadow-light: rgba(255, 255, 255, 0.1);
+      --shadow-opacity: 0.2;
+      --pink-shadow: rgba(255, 105, 180, 0.5);
+    }
+
+    /* fade-in & slide-up */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      height: 100vh;
+      background: var(--page-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: "Segoe UI", sans-serif;
+      overflow: hidden;
+    }
+
+    .container {
+      animation: fadeInUp 0.8s ease-out forwards;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .card {
+      background: var(--page-bg);
+      border-radius: 20px;
+      padding: 60px 80px;
+      box-shadow:
+        -10px -10px 20px var(--shadow-light),
+         10px  10px 20px rgba(0, 0, 0, var(--shadow-opacity));
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow:
+        -12px -12px 24px var(--shadow-light),
+         12px  12px 24px rgba(0, 0, 0, var(--shadow-opacity));
+    }
+
+    .play-button {
+      background: var(--page-bg);
+      border: none;
+      color: var(--accent-color);
+      font-size: 1.4rem;
+      padding: 18px 50px;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow:
+        -6px -6px 18px var(--shadow-light),
+         6px  6px 18px rgba(0, 0, 0, var(--shadow-opacity));
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+    }
+
+    .play-button:hover {
+      box-shadow:
+        -6px -6px 18px var(--pink-shadow),
+         6px  6px 18px rgba(0, 0, 0, var(--shadow-opacity));
+      transform: translateY(-3px);
+    }
+
+    /* neon glow on click */
+    .play-button.active {
+      box-shadow:
+        -6px -6px 24px var(--pink-shadow),
+         6px  6px 24px var(--pink-shadow);
+    }
+
+    /* keyboard-focus outline */
+    .play-button:focus {
+      outline: none;
+      box-shadow:
+        0 0 0 3px var(--accent-color),
+        -6px -6px 18px var(--shadow-light),
+         6px  6px 18px rgba(0, 0, 0, var(--shadow-opacity));
+    }
+  </style>
 </head>
+
 <body>
-  <div class="sidebar"></div>
   <div class="container">
     <div class="card">
-      <button class="play-button">Play Now</button>
+      <button class="play-button" aria-label="Play Now">
+        Play Now
+      </button>
     </div>
   </div>
+
+  <script>
+    // neon glow then navigates on click
+    document.querySelector(".play-button").addEventListener("click", function() {
+      this.classList.add("active");
+      setTimeout(() => location.href = "/", 200);
+    });
+  </script>
 </body>
 </html>
