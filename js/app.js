@@ -20,11 +20,13 @@ function navigate(path) {
   }
 }
 
-document.querySelectorAll('.sidebar a').forEach(link => {
-  link.addEventListener('click', e => {
+// ✅ Event delegation: works for dynamically loaded content too
+document.addEventListener('click', e => {
+  const link = e.target.closest('[data-route]');
+  if (link) {
     e.preventDefault();
     navigate(link.dataset.route);
-  });
+  }
 });
 
 window.onpopstate = () => {
