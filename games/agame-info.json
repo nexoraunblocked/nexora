@@ -75,11 +75,6 @@
     "thumbnail": "assets/thumbnails/bottlejump3d.jpg"
   },
   {
-    "title": "Call of Duty 4",
-    "file": "games/clchess.html",
-    "thumbnail": "assets/thumbnails/cod4.png"
-  },
-  {
     "title": "Checkers",
     "file": "games/clcheckers.html",
     "thumbnail": "assets/thumbnails/checkers.png"
@@ -152,7 +147,7 @@
   {
     "title": "Raft Wars 2",
     "file": "games/clraftwars2.html",
-    "thumbnail": "assets/thumbnails/draftwars.jpg"
+    "thumbnail": "assets/thumbnails/raftwars.jpg"
   },
   {
     "title": "Draw Climber",
@@ -297,7 +292,7 @@
   {
     "title": "Just Fall Lol",
     "file": "games/cljustfalllol.html",
-    "thumbnail": "assets/thumbnails/justfalllol.webp"
+    "thumbnail": "assets/thumbnails/justfalllol.jpg"
   },
   {
     "title": "Learn to Fly 3",
@@ -417,12 +412,12 @@
   {
     "title": "Sandboxels",
     "file": "games/clsandboxels.html",
-    "thumbnail": "assets/thumbnails/sandboxels.jpg"
+    "thumbnail": "assets/thumbnails/sandboxels.webp"
   },
   {
     "title": "Sandtris",
     "file": "games/clsandtris.html",
-    "thumbnail": "assets/thumbnails/sandtris.webp"
+    "thumbnail": "assets/thumbnails/sandtris.jpg"
   },
   {
     "title": "Sentry Fortress",
@@ -430,19 +425,14 @@
     "thumbnail": "assets/thumbnails/sentryfortress.webp"
   },
   {
-    "title": "Shift 2",
-    "file": "games/clshift2.html",
-    "thumbnail": "assets/thumbnails/shfit2.webp"
-  },
-  {
     "title": "Slipways",
     "file": "games/clslipways.html",
-    "thumbnail": "assets/thumbnails/slipways.webp"
+    "thumbnail": "assets/thumbnails/slipways.jpg"
   },
   {
     "title": "Slither.io",
     "file": "games/clslitherio.html",
-    "thumbnail": "assets/thumbnails/slitherio.webp"
+    "thumbnail": "assets/thumbnails/slitherio.png"
   },
   {
     "title": "Slope",
@@ -452,7 +442,7 @@
   {
     "title": "Slow Roads",
     "file": "games/clslowroads.html",
-    "thumbnail": "assets/thumbnails/slowroads.webp"
+    "thumbnail": "assets/thumbnails/slowroads.avif"
   },
   {
     "title": "Sniper Shot",
@@ -472,7 +462,7 @@
   {
     "title": "Solar Smash",
     "file": "games/clsolarsmash.html",
-    "thumbnail": "assets/thumbnails/solarsmash.webp"
+    "thumbnail": "assets/thumbnails/solarsmash.jpg"
   },
   {
     "title": "Solitaire",
@@ -487,7 +477,7 @@
   {
     "title": "Sprunki",
     "file": "games/clsprunki.html",
-    "thumbnail": "assets/thumbnails/sprunki.webp"
+    "thumbnail": "assets/thumbnails/sprunki.jpg"
   },
   {
     "title": "Stacktris",
@@ -502,7 +492,7 @@
   {
     "title": "Stickman Hook",
     "file": "games/clstickmanhook.html",
-    "thumbnail": "assets/thumbnails/stickmanhook.webp"
+    "thumbnail": "assets/thumbnails/stickmanhook.jpg"
   },
   {
     "title": "Stick War 2",
@@ -512,7 +502,7 @@
   {
     "title": "Storm the House 3",
     "file": "games/clstormthehouse3.html",
-    "thumbnail": "assets/thumbnails/stormthehouse3.webp"
+    "thumbnail": "assets/thumbnails/stormthehouse3.jpg"
   },
   {
     "title": "Street Fighter 2",
@@ -522,32 +512,32 @@
   {
     "title": "Strike Force Heroes 3",
     "file": "games/clstrikeforceheroes3.html",
-    "thumbnail": "assets/thumbnails/strikeforceheroes3.webp"
+    "thumbnail": "assets/thumbnails/strikeforceheroes3.jpg"
   },
   {
     "title": "Subway Surfers : Barcelona",
     "file": "games/clsubwaysurfersbarcelona.html",
-    "thumbnail": "assets/thumbnails/subwaysurfersbarcelona.webp"
+    "thumbnail": "assets/thumbnails/subwaysurfersbarcelona.jpg"
   },
   {
     "title": "Super Bomber Man 2",
     "file": "games/clsuperbomberman2.html",
-    "thumbnail": "assets/thumbnails/superbomberman2.webp"
+    "thumbnail": "assets/thumbnails/superbomberman2.jpg"
   },
   {
     "title": "Super Mario Kart",
     "file": "games/clsupermariokart.html",
-    "thumbnail": "assets/thumbnails/supermariokart.webp"
+    "thumbnail": "assets/thumbnails/supermariokart.jpg"
   },
   {
     "title": "Survival Race 2",
     "file": "games/clsurvivalracev2.html",
-    "thumbnail": "assets/thumbnails/survivalrace2.webp"
+    "thumbnail": "assets/thumbnails/survivalrace2.jpg"
   },
   {
     "title": "Table Tanks",
     "file": "games/cltabletanks.html",
-    "thumbnail": "assets/thumbnails/tabletanks.webp"
+    "thumbnail": "assets/thumbnails/tabletanks.png"
   },
   {
     "title": "Telephone Trouble",
@@ -562,12 +552,12 @@
   {
     "title": "Territorial.io",
     "file": "games/clterritorialio.html",
-    "thumbnail": "assets/thumbnails/territorialio.webp"
+    "thumbnail": "assets/thumbnails/territorialio.jpg"
   },
   {
     "title": "Tetris",
     "file": "games/cltetris.html",
-    "thumbnail": "assets/thumbnails/tetris.webp"
+    "thumbnail": "assets/thumbnails/tetris.jpg"
   },
   {
     "title": "There is No Game",
@@ -585,12 +575,7 @@
     "thumbnail": "assets/thumbnails/towerblocks.webp"
   },
   {
-    "title": "Trace",
-    "file": "games/cltrace.html",
-    "thumbnail": "assets/thumbnails/trace.webp"
-  },
-  {
-    "title": "Truck Simulator",
+    "title": "Indian Truck Simulator",
     "file": "games/cltrucksim.html",
     "thumbnail": "assets/thumbnails/trucksim.webp"
   },
@@ -607,37 +592,37 @@
   {
     "title": "Vex 3",
     "file": "games/clvex3.html",
-    "thumbnail": "assets/thumbnails/vex3.webp"
+    "thumbnail": "assets/thumbnails/vex3.png"
   },
   {
     "title": "Vex 4",
     "file": "games/clvex4.html",
-    "thumbnail": "assets/thumbnails/vex4.webp"
+    "thumbnail": "assets/thumbnails/vex4.png"
   },
   {
     "title": "Vex 5",
     "file": "games/clvex5.html",
-    "thumbnail": "assets/thumbnails/vex5.webp"
+    "thumbnail": "assets/thumbnails/vex5.png"
   },
   {
     "title": "Vex 6",
     "file": "games/clvex6.html",
-    "thumbnail": "assets/thumbnails/vex6.webp"
+    "thumbnail": "assets/thumbnails/vex6.png"
   },
   {
     "title": "Vex 7",
     "file": "games/clvex7.html",
-    "thumbnail": "assets/thumbnails/vex7.webp"
+    "thumbnail": "assets/thumbnails/vex7.png"
   },
   {
     "title": "Vex 8",
     "file": "games/clvex8.html",
-    "thumbnail": "assets/thumbnails/vex8.webp"
+    "thumbnail": "assets/thumbnails/vex8.png"
   },
   {
     "title": "Volley Random",
     "file": "games/clvolleyrandom.html",
-    "thumbnail": "assets/thumbnails/vollyrandom.webp"
+    "thumbnail": "assets/thumbnails/volleyrandom.webp"
   },
   {
     "title": "We Become What We Behold",
