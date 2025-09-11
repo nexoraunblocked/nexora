@@ -80,11 +80,6 @@
     "thumbnail": "assets/thumbnails/checkers.png"
   },
   {
-    "title": "Chess",
-    "file": "games/clchess.html",
-    "thumbnail": "assets/thumbnails/chess.png"
-  },
-  {
     "title": "Cluster Rush",
     "file": "games/clclusterrush.html",
     "thumbnail": "assets/thumbnails/cluster-rush.jpg"
@@ -417,12 +412,12 @@
   {
     "title": "Sandtris",
     "file": "games/clsandtris.html",
-    "thumbnail": "assets/thumbnails/sandtris.jpg"
+    "thumbnail": "assets/thumbnails/sandtris.png"
   },
   {
     "title": "Sentry Fortress",
     "file": "games/clsentryfortress.html",
-    "thumbnail": "assets/thumbnails/sentryfortress.webp"
+    "thumbnail": "assets/thumbnails/sentryfortress.jpg"
   },
   {
     "title": "Slipways",
@@ -542,7 +537,7 @@
   {
     "title": "Telephone Trouble",
     "file": "games/cltelephonetrouble.html",
-    "thumbnail": "assets/thumbnails/telephonetrouble.webp"
+    "thumbnail": "assets/thumbnails/telephonetrouble.png"
   },
   {
     "title": "Temple Run 2",
