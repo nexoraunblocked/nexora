@@ -6,12 +6,11 @@
   <title>Nexora Unblocked</title>
   <style>
     :root {
-      --bg-start: #1a1a1a;
-      --bg-end:   #0d0d0d;
-      --pink:     #ff6ec7;
-      --pink-deep:#ff1fa4;
-      --light-shadow: rgba(255, 255, 255, 0.05);
-      --dark-shadow:  rgba(0, 0, 0, 0.2);
+      --bg-start: #000000;
+      --bg-end:   #ff69b4;
+      --btn-bg:   rgba(255, 105, 180, 0.5);
+      --btn-hover:#b3006b;
+      --btn-shadow-text: rgba(255, 105, 180, 0.7);
     }
 
     * {
@@ -28,14 +27,31 @@
       justify-content: center;
       background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
       font-family: "Segoe UI", sans-serif;
-      color: white;
+      color: #ffffff;
       text-align: center;
-      padding: 20px;
+      overflow: hidden;
+    }
+
+    /* slide animations */
+    @keyframes slideInLeft {
+      from { opacity: 0; transform: translateX(-100px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(100px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes slideInUp {
+      from { opacity: 0; transform: translateY(50px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
     h1 {
       font-size: clamp(2rem, 6vw, 3rem);
-      margin-bottom: 0.25em;
+      margin-bottom: 0.5em;
+      animation: slideInLeft 0.8s ease-out forwards;
     }
 
     h2 {
@@ -44,44 +60,41 @@
       max-width: 600px;
       margin-bottom: 2em;
       line-height: 1.4;
+      animation: slideInRight 0.8s ease-out 0.2s forwards;
     }
 
     .play-button {
-      background: var(--bg-start);
-      color: var(--pink);
+      background-color: var(--btn-bg);
       border: none;
       border-radius: 50px;
       padding: 18px 50px;
       font-size: 1.4rem;
+      font-weight: bold;
+      color: #ffffff;
+      text-shadow: 0 2px 4px var(--btn-shadow-text);
       cursor: pointer;
-      box-shadow:
-        -6px -6px 18px var(--light-shadow),
-         6px  6px 18px var(--dark-shadow);
-      transition: color 0.3s ease,
-                  transform 0.3s ease,
-                  box-shadow 0.3s ease;
+      transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+      animation: slideInUp 0.8s ease-out 0.4s forwards;
+      opacity: 0; /* start hidden until animation */
     }
 
     .play-button:hover {
-      color: var(--pink-deep);
-      box-shadow:
-        -6px -6px 18px var(--pink),
-         6px  6px 18px var(--pink-deep);
+      background-color: var(--btn-hover);
       transform: translateY(-3px);
+      box-shadow: 0 6px 12px var(--btn-shadow-text);
     }
 
     .play-button:focus {
       outline: none;
       box-shadow:
-        0 0 0 3px var(--pink),
-        -6px -6px 18px var(--light-shadow),
-         6px  6px 18px var(--dark-shadow);
+        0 0 0 3px var(--btn-hover),
+        0 6px 12px var(--btn-shadow-text);
     }
 
     .play-button.active {
       box-shadow:
-        -6px -6px 24px var(--pink),
-         6px  6px 24px var(--pink);
+        0 0 20px var(--btn-hover),
+        0 0 30px var(--btn-hover);
     }
   </style>
 </head>
@@ -91,12 +104,8 @@
   <button class="play-button" aria-label="Play Now">Play Now</button>
 
   <script>
-    const btn = document.querySelector(".play-button");
-    btn.addEventListener("click", () => {
-      btn.classList.add("active");
-      setTimeout(() => {
-        location.href = "/";
-      }, 200);
+    document.querySelector(".play-button").addEventListener("click", function() {
+      this.classList.add("active");
     });
   </script>
 </body>
