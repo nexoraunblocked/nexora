@@ -1,10 +1,411 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8">
-    <script>
-      location.href = "/";
-    </script>
-  </head>
-  <body></body>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Public Domain Movies — Vidnest Auto Embed</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #0f1115;
+      --panel: #161a22;
+      --card: #1b2130;
+      --text: #e8ecf1;
+      --muted: #9aa6b2;
+      --accent: #4f8cff;
+      --ok: #28c76f;
+      --warn: #fbbf24;
+      --err: #ff5a5f;
+    }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, "Helvetica Neue", Helvetica, sans-serif;
+      background: linear-gradient(180deg, #0b0e13, #0f1115 20%, #0f1115 100%);
+      color: var(--text);
+    }
+    header {
+      padding: 24px 18px;
+      border-bottom: 1px solid #20283a;
+      background: rgba(15,17,21,0.7);
+      position: sticky; top: 0; backdrop-filter: blur(8px);
+      z-index: 10;
+    }
+    h1 { margin: 0 0 8px; font-size: 20px; font-weight: 700; }
+    .sub { color: var(--muted); font-size: 13px; }
+    .controls {
+      display: grid;
+      grid-template-columns: 1fr 180px 140px 140px 160px;
+      gap: 10px;
+      margin-top: 14px;
+      align-items: center;
+    }
+    .controls input, .controls select, .controls button {
+      background: var(--panel);
+      border: 1px solid #283143;
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 14px;
+      outline: none;
+    }
+    .controls input::placeholder { color: #6b7687; }
+    .controls button {
+      background: linear-gradient(180deg, #4f8cff, #3a6eea);
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .controls button:disabled { opacity: 0.5; cursor: not-allowed; }
+    main { padding: 20px 18px 80px; }
+    .status {
+      margin: 12px 0 18px;
+      padding: 10px 12px;
+      background: #121722;
+      border: 1px solid #24314a;
+      border-radius: 10px;
+      font-size: 13px;
+      color: var(--muted);
+      white-space: pre-wrap;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 14px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid #273048;
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+    .card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.25); }
+    .poster {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: #0e1420;
+      display: grid; place-items: center;
+      color: #8091a8; font-size: 12px;
+    }
+    .meta {
+      padding: 12px;
+      border-top: 1px solid #273048;
+    }
+    .title { font-weight: 700; font-size: 14px; margin: 0 0 6px; }
+    .info { color: var(--muted); font-size: 12px; display: flex; gap: 8px; flex-wrap: wrap; }
+    .iframe-wrap {
+      position: relative; width: 100%; aspect-ratio: 16/9; background: #0e1420;
+      border-top: 1px solid #273048;
+    }
+    iframe {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      border: 0; border-radius: 0;
+    }
+    .badges { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
+    .badge {
+      font-size: 11px; padding: 3px 7px; border-radius: 999px; border: 1px solid #2d3a57; color: #a7b3c7;
+      background: #121826;
+    }
+    footer { padding: 18px; color: var(--muted); font-size: 12px; border-top: 1px solid #20283a; }
+    .tip { color: #aab6c7; }
+    .ok { color: var(--ok); }
+    .warn { color: var(--warn); }
+    .err { color: var(--err); }
+    @media (max-width: 920px) {
+      .controls { grid-template-columns: 1fr 1fr 1fr; }
+      .controls select:nth-of-type(1),
+      .controls select:nth-of-type(2) { grid-column: span 1; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Public Domain Movie Library — Vidnest Auto Embed</h1>
+    <div class="sub">Automates a legal “Netflix-style” catalog: pulls public domain candidates from Internet Archive, matches TMDB IDs, and builds Vidnest players.</div>
+    <div class="controls">
+      <input id="tmdbKey" type="password" placeholder="TMDB API key (required)" />
+      <select id="rows">
+        <option value="12">Fetch 12</option>
+        <option value="24" selected>Fetch 24</option>
+        <option value="48">Fetch 48</option>
+        <option value="72">Fetch 72</option>
+      </select>
+      <select id="yearFilter">
+        <option value="">Any year</option>
+        <option value="<=1928">Published ≤ 1928 (safe PD rule)</option>
+        <option value="1900-1928">1900–1928</option>
+        <option value="1929-1963">1929–1963 (check renewal)</option>
+        <option value="1964-1978">1964–1978 (check renewal)</option>
+      </select>
+      <select id="license">
+        <option value="">Any license</option>
+        <option value="publicdomain">Public Domain</option>
+        <option value="pdm">Public Domain Mark</option>
+        <option value="cc-by">CC-BY</option>
+        <option value="cc0">CC0</option>
+      </select>
+      <button id="go">Build Library</button>
+    </div>
+  </header>
+
+  <main>
+    <div id="status" class="status">Ready. Enter your TMDB API key and click “Build Library”.</div>
+    <div id="grid" class="grid"></div>
+  </main>
+
+  <footer>
+    <div class="tip">
+      Tip: This page fetches Internet Archive metadata client-side and matches titles on TMDB. Always verify public-domain or license status before publishing widely, especially for post‑1928 works or restored editions.
+    </div>
+  </footer>
+
+  <script>
+    // -------- Config --------
+    const IA_BASE = "https://archive.org/advancedsearch.php";
+    const IA_FIELDS = [
+      "identifier","title","publicdate","date","year","creator","description","licenseurl"
+    ];
+    const TMDB_BASE = "https://api.themoviedb.org/3";
+    const TMDB_IMG = "https://image.tmdb.org/t/p/w500";
+
+    const statusEl = document.getElementById("status");
+    const gridEl = document.getElementById("grid");
+    const goBtn = document.getElementById("go");
+    const tmdbKeyEl = document.getElementById("tmdbKey");
+    const rowsEl = document.getElementById("rows");
+    const yearFilterEl = document.getElementById("yearFilter");
+    const licenseEl = document.getElementById("license");
+
+    function setStatus(msg, cls) {
+      statusEl.textContent = msg;
+      statusEl.className = "status" + (cls ? " " + cls : "");
+    }
+
+    function buildIaQuery({ rows = 24, yearFilter = "", license = "" }) {
+      const parts = [
+        'mediatype:"movies"',
+        // IA collection with feature films is often "feature_films"; we don’t require it to broaden results.
+      ];
+      if (license === "publicdomain") {
+        parts.push('(licenseurl:"publicdomain" OR licenseurl:"Public Domain")');
+      } else if (license === "pdm") {
+        parts.push('(licenseurl:"Public Domain Mark" OR licenseurl:"pdm")');
+      } else if (license === "cc-by") {
+        parts.push('(licenseurl:"creativecommons.org/licenses/by")');
+      } else if (license === "cc0") {
+        parts.push('(licenseurl:"creativecommons.org/publicdomain/zero")');
+      }
+
+      // Year filter heuristics
+      if (yearFilter) {
+        if (yearFilter === "<=1928") {
+          parts.push('(year:[* TO 1928] OR date:[* TO 1928])');
+        } else {
+          const m = yearFilter.match(/^(\d{4})-(\d{4})$/);
+          if (m) {
+            parts.push(`(year:[${m[1]} TO ${m[2]}] OR date:[${m[1]} TO ${m[2]}])`);
+          }
+        }
+      }
+
+      const query = parts.join(" AND ");
+      const params = new URLSearchParams({
+        q: query,
+        output: "json",
+        rows: String(rows),
+        sort: "year asc",
+        "fl[]": IA_FIELDS, // IA supports repeated fl[]
+      });
+      return IA_BASE + "?" + params.toString();
+    }
+
+    async function fetchIA(opts) {
+      const url = buildIaQuery(opts);
+      const res = await fetch(url);
+      if (!res.ok) throw new Error("Internet Archive request failed: " + res.status);
+      const data = await res.json();
+      const docs = (data && data.response && data.response.docs) || [];
+      return docs.map(d => ({
+        id: d.identifier,
+        title: d.title,
+        year: normYear(d.year || d.date || d.publicdate),
+        creators: d.creator,
+        description: truncate((d.description || "").replace(/\s+/g, " ").trim(), 220),
+        license: d.licenseurl || "",
+      }));
+    }
+
+    function normYear(input) {
+      if (!input) return null;
+      const s = String(input);
+      const m = s.match(/(18|19|20)\d{2}/);
+      return m ? parseInt(m[0], 10) : null;
+    }
+
+    function truncate(s, n) { return s.length > n ? s.slice(0, n - 1) + "…" : s; }
+
+    async function tmdbSearchMovie(key, title, year) {
+      const params = new URLSearchParams({
+        api_key: key,
+        query: title,
+        include_adult: "false",
+        page: "1",
+      });
+      if (year) params.set("year", String(year));
+      const url = `${TMDB_BASE}/search/movie?${params.toString()}`;
+      const res = await fetch(url);
+      if (!res.ok) throw new Error("TMDB search failed: " + res.status);
+      const data = await res.json();
+      const results = data.results || [];
+      // Prefer exact title/year, else best score
+      let best = null;
+      for (const r of results) {
+        if (!best) best = r;
+        const ry = r.release_date ? parseInt(r.release_date.slice(0,4), 10) : null;
+        const exactTitle = r.title && title && r.title.toLowerCase().trim() === title.toLowerCase().trim();
+        const yearClose = year && ry ? Math.abs(ry - year) <= 1 : false;
+        if (exactTitle && yearClose) { best = r; break; }
+        if (exactTitle && !year) { best = r; }
+      }
+      if (!best) return null;
+      return {
+        id: best.id,
+        title: best.title || title,
+        year: best.release_date ? best.release_date.slice(0,4) : (year || ""),
+        poster: best.poster_path ? (TMDB_IMG + best.poster_path) : "",
+        overview: best.overview || "",
+      };
+    }
+
+    function createCard({ ia, tmdb, embedUrl }) {
+      const el = document.createElement("div");
+      el.className = "card";
+
+      const poster = document.createElement("div");
+      poster.className = "poster";
+      if (tmdb && tmdb.poster) {
+        const img = document.createElement("img");
+        img.src = tmdb.poster;
+        img.alt = (tmdb.title || ia.title) + " poster";
+        img.style.width = "100%";
+        img.style.height = "100%";
+        img.style.objectFit = "cover";
+        poster.appendChild(img);
+      } else {
+        poster.textContent = "No poster";
+      }
+
+      const meta = document.createElement("div");
+      meta.className = "meta";
+      const title = document.createElement("div");
+      title.className = "title";
+      title.textContent = (tmdb && tmdb.title) || ia.title || "Untitled";
+      const info = document.createElement("div");
+      info.className = "info";
+      info.innerHTML = `
+        <span>Year: ${ (tmdb && tmdb.year) || (ia.year || "—") }</span>
+        <span>License: ${ ia.license ? ia.license.replace(/^https?:\/\//,'') : "Unknown" }</span>
+      `;
+      const badges = document.createElement("div");
+      badges.className = "badges";
+      const b1 = document.createElement("div");
+      b1.className = "badge";
+      b1.textContent = ia.creators ? `By: ${Array.isArray(ia.creators) ? ia.creators[0] : ia.creators}` : "Creator: —";
+      const b2 = document.createElement("div");
+      b2.className = "badge";
+      b2.textContent = tmdb ? `TMDB: ${tmdb.id}` : "TMDB: —";
+      badges.appendChild(b1);
+      badges.appendChild(b2);
+
+      meta.appendChild(title);
+      meta.appendChild(info);
+      meta.appendChild(badges);
+
+      const wrap = document.createElement("div");
+      wrap.className = "iframe-wrap";
+      if (embedUrl) {
+        const iframe = document.createElement("iframe");
+        iframe.src = embedUrl;
+        iframe.allowFullscreen = true;
+        iframe.loading = "lazy";
+        wrap.appendChild(iframe);
+      } else {
+        const note = document.createElement("div");
+        note.style.color = "#94a3b8";
+        note.style.display = "grid";
+        note.style.placeItems = "center";
+        note.style.height = "100%";
+        note.style.fontSize = "12px";
+        note.textContent = "No Vidnest embed — TMDB match not found";
+        wrap.appendChild(note);
+      }
+
+      el.appendChild(poster);
+      el.appendChild(meta);
+      el.appendChild(wrap);
+      return el;
+    }
+
+    async function build() {
+      const key = tmdbKeyEl.value.trim();
+      if (!key) { setStatus("Please enter your TMDB API key.", "warn"); return; }
+      goBtn.disabled = true;
+      gridEl.innerHTML = "";
+      setStatus("Fetching Internet Archive titles…", "");
+
+      try {
+        const rows = parseInt(rowsEl.value, 10) || 24;
+        const docs = await fetchIA({
+          rows,
+          yearFilter: yearFilterEl.value,
+          license: licenseEl.value
+        });
+        if (!docs.length) {
+          setStatus("No Internet Archive results matched your filters.", "warn");
+          goBtn.disabled = false;
+          return;
+        }
+        setStatus(`Found ${docs.length} candidate titles. Matching TMDB IDs…`, "");
+
+        const out = [];
+        let matched = 0;
+
+        for (let i = 0; i < docs.length; i++) {
+          const ia = docs[i];
+          // Try exact year; if no match, try +/- 1 year and finally no year
+          let tmdb = await tmdbSearchMovie(key, ia.title, ia.year);
+          if (!tmdb && ia.year) tmdb = await tmdbSearchMovie(key, ia.title, ia.year - 1);
+          if (!tmdb && ia.year) tmdb = await tmdbSearchMovie(key, ia.title, ia.year + 1);
+          if (!tmdb) tmdb = await tmdbSearchMovie(key, ia.title, null);
+
+          let embedUrl = null;
+          if (tmdb && tmdb.id) {
+            embedUrl = `https://vidnest.fun/movie/${tmdb.id}`;
+            matched++;
+          }
+
+          const card = createCard({ ia, tmdb, embedUrl });
+          out.push(card);
+          gridEl.appendChild(card);
+
+          setStatus(`Processed ${i + 1}/${docs.length} • Matched ${matched} to TMDB • Building embeds…`, "");
+          // Gentle pacing to avoid hammering APIs
+          await sleep(220);
+        }
+
+        setStatus(`Done. ${matched}/${docs.length} movies matched TMDB and have Vidnest embeds. Review licenses before publishing.`, "ok");
+      } catch (e) {
+        console.error(e);
+        setStatus("Error: " + e.message, "err");
+      } finally {
+        goBtn.disabled = false;
+      }
+    }
+
+    function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+    goBtn.addEventListener("click", build);
+  </script>
+</body>
 </html>

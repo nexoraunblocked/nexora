@@ -3,7 +3,6 @@ const app = document.getElementById('app');
 const routes = {
   '/home':    renderHome,
   '/games':   renderGamesRoute,
-  '/movies':  renderMovies,
   '/proxy':   renderProxy,
   '/hacks':   renderHacks,
   '/chatbot': renderChatbot,
@@ -20,7 +19,6 @@ function navigate(path) {
   }
 }
 
-// ✅ Event delegation: works for dynamically loaded content too
 document.addEventListener('click', e => {
   const link = e.target.closest('[data-route]');
   if (link) {
@@ -38,7 +36,6 @@ const initialPath = location.pathname;
 (routes[initialPath] || renderHome)();
 
 function renderHome()    { loadView('home.html'); }
-function renderMovies()  { loadView('movies.html'); }
 function renderProxy()   { loadView('proxy.html'); }
 function renderHacks()   { loadView('hacks.html'); }
 function renderChatbot() { loadView('chatbot.html'); }

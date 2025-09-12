@@ -3,13 +3,9 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<script>
-  location.href = "/";
-</script>
 <title>Nexora Chat</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
-
 <link rel="stylesheet" href="css/chatbot.css" />
 </head>
 
@@ -109,7 +105,7 @@
 
     const name = document.createElement("div");
     name.className = "bot-name";
-    name.textContent = "Deepseek V3";
+    name.textContent = "ChatGPT 3.5 Turbo";
 
     const body = document.createElement("div");
     body.innerHTML = markup;
@@ -206,7 +202,7 @@
 
     const name = document.createElement('div');
     name.className = 'bot-name';
-    name.textContent = 'Deepseek V3';
+    name.textContent = 'ChatGPT 3.5 Turbo';
 
     const body = document.createElement('div');
     body.innerHTML = `<div class="typing-indicator"><div class="loader" aria-hidden="true"></div><div>Typing...</div></div>`;
@@ -247,13 +243,13 @@
 
     showTypingIndicator();
 
-    try{
+    try {
       const res = await fetch("https://nexora-learning-logs55.fly.dev/chat", {
-        method:"POST",
-        headers:{ "Content-Type":"application/json" },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          model:"deepseek/deepseek-chat-v3.1",
-          messages:[{ role:"user", content: prompt }]
+          model: "gpt-3.5-turbo", // updated model
+          messages: [{ role: "user", content: prompt }]
         })
       });
 
@@ -264,83 +260,99 @@
       hideTypingIndicator();
       addBotMessage(markup);
 
-    }catch(err){
+    } catch (err) {
       hideTypingIndicator();
-      addBotMessage(`<div class="bot-chunk">Error: ${escapeHtml(err?.message || String(err))}</div>`);
-    }finally{
+      addBotMessage(
+        `<div class="bot-chunk">Error: ${escapeHtml(err?.message || String(err))}</div>`
+      );
+    } finally {
       sendEl.classList.remove("typing");
       sendEl.textContent = oldLabel;
       sendEl.disabled = false;
-      if(scrollEl) scrollEl.scrollTop = scrollEl.scrollHeight;
+      if (scrollEl) scrollEl.scrollTop = scrollEl.scrollHeight;
     }
   }
 
-  function attachTo(root){
+  function attachTo(root) {
     const { promptEl, sendEl } = getEls(root);
-    if(!promptEl || !sendEl) return false;
-    if(sendEl.dataset.nexoraAttached) return true;
+    if (!promptEl || !sendEl) return false;
+    if (sendEl.dataset.nexoraAttached) return true;
 
     sendEl.addEventListener("click", sendMessage);
 
-    promptEl.addEventListener("compositionstart", ()=> { promptEl.dataset.nexoraComposing = "1"; });
-    promptEl.addEventListener("compositionend", ()=> { delete promptEl.dataset.nexoraComposing; });
+    promptEl.addEventListener("compositionstart", () => {
+      promptEl.dataset.nexoraComposing = "1";
+    });
+    promptEl.addEventListener("compositionend", () => {
+      delete promptEl.dataset.nexoraComposing;
+    });
 
-    promptEl.addEventListener("keydown", function(e){
-      if(promptEl.dataset.nexoraComposing) return; // ignore while composing (IME)
-      const isEnter = e.key === "Enter" || e.code === "Enter" || e.keyCode === 13;
-      if(!isEnter) return;
-      if(e.shiftKey) return;
+    promptEl.addEventListener("keydown", function (e) {
+      if (promptEl.dataset.nexoraComposing) return;
+      const isEnter =
+        e.key === "Enter" || e.code === "Enter" || e.keyCode === 13;
+      if (!isEnter) return;
+      if (e.shiftKey) return;
       e.preventDefault();
       sendMessage();
     });
 
-    promptEl.addEventListener("keypress", function(e){
-      if(promptEl.dataset.nexoraComposing) return;
+    promptEl.addEventListener("keypress", function (e) {
+      if (promptEl.dataset.nexoraComposing) return;
       const isEnter = e.key === "Enter" || e.keyCode === 13;
-      if(!isEnter) return;
+      if (!isEnter) return;
       e.preventDefault();
       sendMessage();
     });
 
     sendEl.dataset.nexoraAttached = "1";
-
     startIntroLoop(root);
-
     return true;
   }
 
   window.NexoraChat = {
-    init(root){
-      try{
+    init(root) {
+      try {
         attachTo(root && root instanceof Element ? root : document);
-      }catch(e){}
+      } catch (e) {}
     }
   };
 
   window.NexoraChat.init(document);
-  if(document.readyState !== "complete"){
-    document.addEventListener("DOMContentLoaded", ()=>window.NexoraChat.init(document));
+  if (document.readyState !== "complete") {
+    document.addEventListener("DOMContentLoaded", () =>
+      window.NexoraChat.init(document)
+    );
   }
 
-  const mo = new MutationObserver(mutations=>{
-    for(const m of mutations){
-      for(const n of m.addedNodes){
-        if(!(n instanceof HTMLElement)) continue;
-        if(n.querySelector && (n.querySelector("#send") || n.querySelector("#prompt") || n.querySelector(".app"))){
+  const mo = new MutationObserver((mutations) => {
+    for (const m of mutations) {
+      for (const n of m.addedNodes) {
+        if (!(n instanceof HTMLElement)) continue;
+        if (
+          n.querySelector &&
+          (n.querySelector("#send") ||
+            n.querySelector("#prompt") ||
+            n.querySelector(".app"))
+        ) {
           window.NexoraChat.init(n);
-        } else if(n.id === "send" || n.id === "prompt" || n.classList?.contains("app")){
+        } else if (
+          n.id === "send" ||
+          n.id === "prompt" ||
+          n.classList?.contains("app")
+        ) {
           window.NexoraChat.init(document);
         }
       }
     }
   });
 
-  const startObserve = ()=>{
-    if(document.body) mo.observe(document.body, { childList:true, subtree:true });
+  const startObserve = () => {
+    if (document.body)
+      mo.observe(document.body, { childList: true, subtree: true });
     else setTimeout(startObserve, 50);
   };
   startObserve();
-
 })();
 </script>
 </body>
